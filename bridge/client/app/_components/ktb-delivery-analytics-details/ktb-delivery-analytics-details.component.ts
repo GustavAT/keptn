@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DeliveryAnalyticsResult, MismatchType } from 'client/app/_models/delivery-analytics-result';
+import { ResultTypes } from 'client/app/_models/result-types';
 import { Trace } from 'client/app/_models/trace';
 
 @Component({
@@ -10,28 +11,35 @@ import { Trace } from 'client/app/_models/trace';
 })
 export class KtbDeliveryAnalyticsDetailsComponent {
 
+  readonly EVENT_PASSED = ResultTypes.PASSED;
+  readonly EVENT_FAILED = ResultTypes.FAILED;
+  readonly EVENT_WARNING = ResultTypes.WARNING;
+
   result: DeliveryAnalyticsResult | undefined;
 
   @Input()
   set event(event: Trace) {
     this.result = {
-      ...event.data.deliveryAnalytics, // TODO: remove demo data
-      parentResult: {
-        service: event.getService(),
-        mismatches: [
-          {
-            service: 'logging',
-            type: MismatchType.Dependency,
-            tagTested: '0.8.12',
-          },
-          {
-            service: 'redis',
-            type: MismatchType.Tag,
-            tagTested: '0.1.2',
-            tagTarget: '0.1.0',
-          }
+      result: ResultTypes.FAILED,
+      service: 'carts',
+      tag: '0.1.3',
+      dependencies: {
+        nodes: ['checkout', 'frontend', 'carts', 'cache', 'logging', 'persistance'],
+        edges: [
+          { v: 'frontend', w: 'checkout' },
+          { v: 'checkout', w: 'carts' },
+          { v: 'carts', w: 'cache' },
+          { v: 'cache', w: 'logging' },
+          { v: 'cache', w: 'persistance' },
         ]
-      }
+      },
+      parentResult: [
+        { service: 'logging', tagTested: '0.1.1', type: MismatchType.Dependency },
+        { service: 'cache', tagTested: '0.4.3', tagTarget: '0.3.1', type: MismatchType.Tag },
+      ],
+      childResult: [
+        { service: 'frontend', tagTested: '0.5.0', tagTarget: '0.4.9', type: MismatchType.Tag },
+      ],
     };
   }
 }

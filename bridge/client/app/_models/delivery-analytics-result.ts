@@ -12,17 +12,12 @@ export interface Mismatch {
     tagTarget?: string;
 }
 
-export interface ReleaseBracketResult {
-    service: string;
-    mismatches: Mismatch[];
-}
-
 export interface DeliveryAnalyticsResult {
     result: ResultTypes;
     service: string;
     tag: string;
-    parentResult?: ReleaseBracketResult;
-    childResult?: ReleaseBracketResult;
+    parentResult?: Mismatch[];
+    childResult?: Mismatch[];
     dependencies?: {
         nodes: string[];
         edges: { v: string; w: string; }[];

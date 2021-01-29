@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MismatchType, ReleaseBracketResult } from 'client/app/_models/delivery-analytics-result';
+import { Mismatch, MismatchType } from 'client/app/_models/delivery-analytics-result';
 
 @Component({
   selector: 'ktb-release-order',
@@ -18,8 +18,8 @@ export class KtbReleaseOrderComponent {
   tag: string;
 
   @Input()
-  parentMismatches: ReleaseBracketResult | undefined;
+  parentMismatches: Mismatch[];
 
   @Input()
-  childMismatches: ReleaseBracketResult | undefined;
+  childMismatches: Mismatch[];
 }

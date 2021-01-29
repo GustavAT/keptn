@@ -1,11 +1,26 @@
-<h3>Delivery Analytics</h3>
+<h3>Dependency Analysis</h3>
 <!--TODO: status -->
 
-<ktb-dependency-graph></ktb-dependency-graph>
+<ng-container *ngIf="result !== undefined">
+    <p *ngIf="result.result === EVENT_PASSED">
+        <dt-icon class="status-icon status-ok" name="checkmark-ok"></dt-icon>
+        The service <b>{{result.service}}</b> is safe to deploy.
+    </p>
+    <p *ngIf="result.result === EVENT_WARNING">
+        <dt-icon class="status-icon status-warning" name="incident"></dt-icon>
+        The service <b>{{result.service}}</b> is safe to deploy. Child dependencies are outdated.
+    </p>
+    <p *ngIf="result.result === EVENT_FAILED">
+        <dt-icon class="status-icon status-error" name="criticalevent"></dt-icon>
+        The service <b>{{result.service}}</b> is not safe to deploy. Parent dependencies are outdated.
+    </p>
 
-<ktb-release-order *ngIf="result !== undefined"
-    [serviceName]="result.service"
-    [tag]="result.tag"
-    [parentMismatches]="result.parentResult"
-    [childMismatches]="result.childResult">
-</ktb-release-order>
+    <p *ngIf="result.dependencies === undefined">Could not find any dependencies for <b>{{result.service}}</b></p>
+
+    <ktb-dependency-graph *ngIf="result.dependencies !== undefined" [result]="result">
+    </ktb-dependency-graph>
+
+    <ktb-release-order *ngIf="result !== undefined" [serviceName]="result.service" [tag]="result.tag"
+        [parentMismatches]="result.parentResult || []" [childMismatches]="result.childResult || []">
+    </ktb-release-order>
+</ng-container>
