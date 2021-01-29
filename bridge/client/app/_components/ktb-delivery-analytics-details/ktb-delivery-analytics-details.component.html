@@ -1,0 +1,11 @@
+<h3>Delivery Analytics</h3>
+<!--TODO: status -->
+
+<ktb-dependency-graph></ktb-dependency-graph>
+
+<ktb-release-order *ngIf="result !== undefined"
+    [serviceName]="result.service"
+    [tag]="result.tag"
+    [parentMismatches]="result.parentResult"
+    [childMismatches]="result.childResult">
+</ktb-release-order>

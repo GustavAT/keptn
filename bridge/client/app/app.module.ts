@@ -45,6 +45,11 @@ import { DtTileModule } from '@dynatrace/barista-components/tile';
 import { DtToastModule } from '@dynatrace/barista-components/toast';
 
 import { MomentModule } from 'ngx-moment';
+import { KtbEvaluationDetailsComponent } from './_components/ktb-evaluation-details/ktb-evaluation-details.component';
+import { KtbDeliveryAnalyticsDetailsComponent } from './_components/ktb-delivery-analytics-details/ktb-delivery-analytics-details.component';
+import { KtbReleaseOrderComponent } from './_components/ktb-delivery-analytics-details/ktb-release-order/ktb-release-order.component';
+import { KtbDependencyGraphComponent } from './_components/ktb-delivery-analytics-details/ktb-dependency-graph/ktb-dependency-graph.component';
+import { KtbEventItemComponent, KtbEventItemDetail } from './_components/ktb-event-item/ktb-event-item.component';
 
 import { KtbEventsListComponent } from './_components/ktb-events-list/ktb-events-list.component';
 import { KtbExpandableTileComponent, KtbExpandableTileHeader } from './_components/ktb-expandable-tile/ktb-expandable-tile.component';
@@ -121,6 +126,9 @@ registerLocaleData(localeEn, 'en');
     KtbTaskItemComponent,
     KtbTaskItemDetail,
     KtbEvaluationDetailsComponent,
+    KtbDeliveryAnalyticsDetailsComponent,
+    KtbReleaseOrderComponent,
+    KtbDependencyGraphComponent,
     KtbSliBreakdownComponent,
     KtbNotificationBarComponent,
     KtbApprovalItemComponent,

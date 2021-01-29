@@ -6,6 +6,7 @@ import {ApprovalStates} from "./approval-states";
 import {EVENT_LABELS} from "./event-labels";
 import {EVENT_ICONS} from "./event-icons";
 import {ProblemStates} from "./problem-states";
+import { DeliveryAnalyticsResult } from './delivery-analytics-result';
 
 
 const DEFAULT_ICON = "information";
@@ -96,6 +97,8 @@ class Trace {
         value: string;
       }
     };
+
+    deliveryAnalytics: DeliveryAnalyticsResult;
 
     approval: {
       result: string;
@@ -206,6 +209,10 @@ class Trace {
 
   public isEvaluationInvalidation(): boolean {
     return this.type === EventTypes.EVALUATION_INVALIDATED;
+  }
+
+  public isDeliveryAnalytics(): boolean {
+    return this.type === EventTypes.DELIVERY_ANALYTICS_TRIGGERED;
   }
 
   hasLabels(): boolean {

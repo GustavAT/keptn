@@ -26,4 +26,7 @@ export enum EventTypes {
   ACTION_TRIGGERED = 'sh.keptn.event.action.triggered',
   ACTION_STARTED = 'sh.keptn.event.action.started',
   ACTION_FINISHED = 'sh.keptn.event.action.finished',
+  DELIVERY_ANALYTICS_TRIGGERED = 'sh.keptn.event.delivery-analytics.triggered',
+  DELIVERY_ANALYTICS_STARTED = 'sh.keptn.event.delivery-analytics.started',
+  DELIVERY_ANALYTICS_FINISHED = 'sh.keptn.event.delivery-analytics.finished',
 };

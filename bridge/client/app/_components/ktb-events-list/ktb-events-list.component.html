@@ -7,6 +7,8 @@
       <ktb-event-item-detail>
         <ktb-evaluation-details *ngIf="event.isEvaluation() && event.isFinished()" [evaluationData]="event.getFinishedEvent()" [isInvalidated]="isInvalidated(event)">
         </ktb-evaluation-details>
+        <ktb-delivery-analytics-details *ngIf="event.isDeliveryAnalytics() && event.isFinished()" [event]="event.getFinishedEvent()">
+        </ktb-delivery-analytics-details>
       </ktb-event-item-detail>
     </ktb-event-item>
   </div>

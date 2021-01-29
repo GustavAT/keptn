@@ -1,0 +1,49 @@
+<div>
+    <p> Deployment order </p>
+
+    <ul>
+        <!-- Parent dependencies -->
+        <ng-container *ngIf="parentMismatches !== undefined; else noParentMismatches">
+            <li *ngFor="let mismatch of parentMismatches.mismatches; index as i; last as isLast"
+                [ngClass]="{'group-separator': isLast, 'error': true}">
+                <ng-container *ngIf="mismatch.type === DEPENDENCY_MISMATCH">
+                    Depoy <b>{{mismatch.service}}</b> <code>{{mismatch.tagTested}}</code>
+                </ng-container>
+                <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
+                    Update <b>{{mismatch.service}}</b> from <code>{{mismatch.tagTarget}}</code> to
+                    <code>mismatch.tagTested}}</code>
+                </ng-container>
+            </li>
+        </ng-container>
+
+        <ng-template #noParentMismatches>
+            <li class="group-separator success"> All parent dependencies are up-to-date </li>
+        </ng-template>
+
+        <!-- Target service -->
+        <li class="group-separator status">Update <span class="service-name">{{serviceName}}</span> to
+            <code>{{tag}}</code>
+        </li>
+
+        <!-- Child dependencies -->
+        <ng-container *ngIf="childMismatches !== undefined; else noChildMismatches">
+            <li *ngFor="let mismatch of childMismatches.mismatches; index as i; last as isLast"
+                [ngClass]="{'group-separator': isLast, 'warning': true}">
+                <ng-container *ngIf="mismatch.type === DEPENDENCY_MISMATCH">
+                    Depoy
+                </ng-container>
+                <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
+                    Update
+                </ng-container>
+                <span class="service-name">{{mismatch.service}}&nbsp;</span>
+                <span class="version-number">{{mismatch.tagTested}}</span>
+                to
+                <span class="version-number">{{mismatch.tagTarget}}</span>
+            </li>
+        </ng-container>
+
+        <ng-template #noChildMismatches>
+            <li class="success"> All child dependencies are up-to-date </li>
+        </ng-template>
+    </ul>
+</div>
