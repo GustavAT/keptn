@@ -77,8 +77,6 @@ export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
       ${dotNodes.join('\n')}
       ${dotEdges.join('\n')}
     }`;
-
-    console.log(this._graph)
   }
 
   private renderGraph() {
