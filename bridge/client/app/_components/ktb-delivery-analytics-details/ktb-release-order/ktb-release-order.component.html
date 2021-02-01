@@ -7,7 +7,7 @@
             <li *ngFor="let mismatch of parentMismatches; index as i; last as isLast"
                 [ngClass]="{'group-separator': isLast, 'error': true}">
                 <ng-container *ngIf="mismatch.type === DEPENDENCY_MISMATCH">
-                    Depoy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
+                    Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
                 </ng-container>
                 <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
                     Update <b>{{mismatch.service}}</b> from <code>{{mismatch.tagTarget}}</code> to
@@ -22,7 +22,7 @@
         </ng-template>
 
         <!-- Target service -->
-        <li class="group-separator status">Update <b>{{serviceName}}</b> to
+        <li class="group-separator status">Deploy <b>{{serviceName}}</b> to
             <code>{{tag}}</code>
         </li>
 
@@ -31,7 +31,7 @@
             <li *ngFor="let mismatch of childMismatches; index as i; last as isLast"
                 [ngClass]="{'group-separator': isLast, 'warning': true}">
                 <ng-container *ngIf="mismatch.type === DEPENDENCY_MISMATCH">
-                    Depoy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
+                    Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
                 </ng-container>
                 <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
                     Update <b>{{mismatch.service}}</b> from <code>{{mismatch.tagTarget}}</code> to

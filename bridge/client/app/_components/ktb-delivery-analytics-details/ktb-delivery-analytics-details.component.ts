@@ -19,7 +19,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
 
   @Input()
   set event(event: Trace) {
-    this.result = this.getResultAllOk();
+    this.result = event.data.deliveryAnalytics;
   }
 
   /**

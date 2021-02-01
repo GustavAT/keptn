@@ -7,17 +7,15 @@
         </p>
         <p *ngIf="result.result === EVENT_WARNING">
             <dt-icon class="status-icon status-warning" name="incident"></dt-icon>
-            The service <b>{{result.service}}</b> is safe to deploy. Child dependencies are outdated.
+            The service <b>{{result.service}}</b> is safe to deploy. Some dependencies are outdated or not deployed.
         </p>
         <p *ngIf="result.result === EVENT_FAILED">
             <dt-icon class="status-icon status-error" name="criticalevent"></dt-icon>
-            The service <b>{{result.service}}</b> is not safe to deploy. Parent dependencies are outdated.
+            The service <b>{{result.service}}</b> is not safe to deploy. Some dependencies are outdated or not deployed.
         </p>
 
         <ktb-dependency-graph [result]="result">
         </ktb-dependency-graph>
-
-        <hr>
 
         <ktb-release-order *ngIf="result !== undefined" [serviceName]="result.service" [tag]="result.tag"
             [parentMismatches]="result.parentResult || []" [childMismatches]="result.childResult || []"
