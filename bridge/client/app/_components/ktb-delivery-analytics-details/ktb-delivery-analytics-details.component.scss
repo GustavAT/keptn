@@ -12,13 +12,13 @@ div {
 }
 
 .status-error {
-    fill: $error-color;
+    fill: $red-600;
 }
 
 .status-warning {
-    fill: $warning-color;
+    fill: $yellow-600;
 }
 
 .status-ok {
-    fill: $cta-color;
+    fill: $green-600;
 }

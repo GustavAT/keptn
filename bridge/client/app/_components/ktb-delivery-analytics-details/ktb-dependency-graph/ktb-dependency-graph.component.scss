@@ -1,4 +1,60 @@
+@import '~@dynatrace/barista-components/style/main';
+
 .graph {
     width: 100%;
     user-select: none;
+    pointer-events: none;
+}
+
+.legend {
+    width: 100%;
+    text-align: center;
+}
+
+.legend-item {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.legend-item-indicator {
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    margin-right: 5px;
+}
+
+.legend-error {
+    background: $red-500;
+}
+
+.legend-warning {
+    background: $yellow-600;
+}
+
+.legend-service {
+    background: $blue-600;
+}
+
+.legend-other {
+    background: $gray-600;
+}
+
+.legend-error-deploy {
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        $red-500 4px,
+        $red-500 4px
+    );
+}
+
+.legend-warning-deploy {
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        $yellow-600 4px,
+        $yellow-600 4px
+    );
 }

@@ -22,4 +22,10 @@ export class KtbReleaseOrderComponent {
 
   @Input()
   childMismatches: Mismatch[];
+
+  @Input()
+  hasParents: boolean;
+
+  @Input()
+  hasChildren: boolean;
 }

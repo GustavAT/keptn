@@ -19,27 +19,119 @@ export class KtbDeliveryAnalyticsDetailsComponent {
 
   @Input()
   set event(event: Trace) {
-    this.result = {
+    this.result = this.getResultAllOk();
+  }
+
+  /**
+   * No tested release-bracket
+   */
+  private getResultNoTestedRB(): DeliveryAnalyticsResult {
+    return {
       result: ResultTypes.FAILED,
-      service: 'carts',
-      tag: '0.1.3',
+      service: 'checkout',
+      tag: '0.5.1',
+    };
+  }
+
+  private getResultParentsMissing(): DeliveryAnalyticsResult {
+    return {
+      result: ResultTypes.FAILED,
+      service: 'checkout',
+      tag: '0.5.1',
       dependencies: {
-        nodes: ['checkout', 'frontend', 'carts', 'cache', 'logging', 'persistance'],
+        parents: ['carts', 'cache', 'payment', 'product-catalog'],
+        children: ['frontend'],
+        edges: [
+          { v: 'frontend', w: 'checkout' },
+          { v: 'checkout', w: 'carts' },
+          { v: 'checkout', w: 'payment' },
+          { v: 'checkout', w: 'product-catalog' },
+          { v: 'carts', w: 'cache' },
+        ],
+      },
+      parentResult: [
+        { service: 'payment', tagTested: '0.5.0', type: MismatchType.Dependency },
+        { service: 'cache', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
+      ],
+      childResult: [],
+    };
+  }
+
+  private getResultChildrenMissing(): DeliveryAnalyticsResult {
+    return {
+      result: ResultTypes.WARNING,
+      service: 'cache',
+      tag: '0.5.1',
+      dependencies: {
+        parents: [],
+        children: ['carts', 'checkout', 'frontend'],
         edges: [
           { v: 'frontend', w: 'checkout' },
           { v: 'checkout', w: 'carts' },
           { v: 'carts', w: 'cache' },
-          { v: 'cache', w: 'logging' },
-          { v: 'cache', w: 'persistance' },
-        ]
+        ],
+      },
+      parentResult: [],
+      childResult: [
+        { service: 'carts', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
+        { service: 'frontend', tagTested: '0.5.0', type: MismatchType.Dependency },
+      ],
+    };
+  }
+
+  private getResultAllMissing(): DeliveryAnalyticsResult {
+    return {
+      result: ResultTypes.FAILED,
+      service: 'carts',
+      tag: '0.5.1',
+      dependencies: {
+        parents: ['cache'],
+        children: ['checkout', 'frontend'],
+        edges: [
+          { v: 'frontend', w: 'checkout' },
+          { v: 'checkout', w: 'carts' },
+          { v: 'carts', w: 'cache' },
+        ],
       },
       parentResult: [
-        { service: 'logging', tagTested: '0.1.1', type: MismatchType.Dependency },
-        { service: 'cache', tagTested: '0.4.3', tagTarget: '0.3.1', type: MismatchType.Tag },
+        { service: 'cache', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
       ],
       childResult: [
-        { service: 'frontend', tagTested: '0.5.0', tagTarget: '0.4.9', type: MismatchType.Tag },
+        { service: 'frontend', tagTested: '0.5.0', type: MismatchType.Dependency },
       ],
+    };
+  }
+
+  private getResultNoParentsAndChildren(): DeliveryAnalyticsResult {
+    return {
+      result: ResultTypes.PASSED,
+      service: 'cache',
+      tag: '0.5.1',
+      dependencies: {
+        parents: [],
+        children: [],
+        edges: [],
+      },
+      parentResult: [],
+      childResult: [],
+    };
+  }
+
+  private getResultAllOk(): DeliveryAnalyticsResult {
+    return {
+      result: ResultTypes.PASSED,
+      service: 'carts',
+      tag: '0.5.1',
+      dependencies: {
+        parents: ['cache'],
+        children: ['checkout'],
+        edges: [
+          { v: 'checkout', w: 'carts' },
+          { v: 'carts', w: 'cache' },
+        ],
+      },
+      parentResult: [],
+      childResult: [],
     };
   }
 }

@@ -1,26 +1,35 @@
-<h3>Dependency Analysis</h3>
-<!--TODO: status -->
-
 <ng-container *ngIf="result !== undefined">
-    <p *ngIf="result.result === EVENT_PASSED">
-        <dt-icon class="status-icon status-ok" name="checkmark-ok"></dt-icon>
-        The service <b>{{result.service}}</b> is safe to deploy.
-    </p>
-    <p *ngIf="result.result === EVENT_WARNING">
-        <dt-icon class="status-icon status-warning" name="incident"></dt-icon>
-        The service <b>{{result.service}}</b> is safe to deploy. Child dependencies are outdated.
-    </p>
-    <p *ngIf="result.result === EVENT_FAILED">
+    <h3>Dependency Analysis</h3>
+    <ng-container *ngIf="result.dependencies as dependencies">
+        <p *ngIf="result.result === EVENT_PASSED">
+            <dt-icon class="status-icon status-ok" name="checkmark-ok"></dt-icon>
+            The service <b>{{result.service}}</b> is safe to deploy.
+        </p>
+        <p *ngIf="result.result === EVENT_WARNING">
+            <dt-icon class="status-icon status-warning" name="incident"></dt-icon>
+            The service <b>{{result.service}}</b> is safe to deploy. Child dependencies are outdated.
+        </p>
+        <p *ngIf="result.result === EVENT_FAILED">
+            <dt-icon class="status-icon status-error" name="criticalevent"></dt-icon>
+            The service <b>{{result.service}}</b> is not safe to deploy. Parent dependencies are outdated.
+        </p>
+
+        <ktb-dependency-graph [result]="result">
+        </ktb-dependency-graph>
+
+        <hr>
+
+        <ktb-release-order *ngIf="result !== undefined" [serviceName]="result.service" [tag]="result.tag"
+            [parentMismatches]="result.parentResult || []" [childMismatches]="result.childResult || []"
+            [hasParents]="dependencies.parents.length > 0" [hasChildren]="dependencies.children.length > 0">
+        </ktb-release-order>
+    </ng-container>
+
+    <ng-container *ngIf="result.dependencies === undefined">
         <dt-icon class="status-icon status-error" name="criticalevent"></dt-icon>
-        The service <b>{{result.service}}</b> is not safe to deploy. Parent dependencies are outdated.
-    </p>
+        No dependencies were detected for the service <b>{{result.service}}</b>.
 
-    <p *ngIf="result.dependencies === undefined">Could not find any dependencies for <b>{{result.service}}</b></p>
+        <p> Make sure that Dynatrace monitoring is configured correctly with your keptn installation.</p>
+    </ng-container>
 
-    <ktb-dependency-graph *ngIf="result.dependencies !== undefined" [result]="result">
-    </ktb-dependency-graph>
-
-    <ktb-release-order *ngIf="result !== undefined" [serviceName]="result.service" [tag]="result.tag"
-        [parentMismatches]="result.parentResult || []" [childMismatches]="result.childResult || []">
-    </ktb-release-order>
 </ng-container>

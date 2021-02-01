@@ -17,7 +17,8 @@
         </ng-container>
 
         <ng-template #noParentMismatches>
-            <li class="group-separator success"> All parent dependencies are up-to-date </li>
+            <li *ngIf="hasParents" class="group-separator success"> All parent dependencies are up-to-date </li>
+            <li *ngIf="!hasParents" class="group-separator other"> No parent dependencies </li>
         </ng-template>
 
         <!-- Target service -->
@@ -40,7 +41,8 @@
         </ng-container>
 
         <ng-template #noChildMismatches>
-            <li class="success"> All child dependencies are up-to-date </li>
+            <li *ngIf="hasChildren" class="success"> All child dependencies are up-to-date </li>
+            <li *ngIf="!hasChildren" class="other"> No child dependencies </li>
         </ng-template>
     </ul>
 </div>

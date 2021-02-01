@@ -19,7 +19,8 @@ export interface DeliveryAnalyticsResult {
     parentResult?: Mismatch[];
     childResult?: Mismatch[];
     dependencies?: {
-        nodes: string[];
+        parents: string[];
+        children: string[];
         edges: { v: string; w: string; }[];
     };
 }
