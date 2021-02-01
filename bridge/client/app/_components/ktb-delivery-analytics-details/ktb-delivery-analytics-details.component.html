@@ -3,15 +3,15 @@
     <ng-container *ngIf="result.dependencies as dependencies">
         <p *ngIf="result.result === EVENT_PASSED">
             <dt-icon class="status-icon status-ok" name="checkmark-ok"></dt-icon>
-            The service <b>{{result.service}}</b> is safe to deploy.
+            The service <b>{{result.service}}</b>&nbsp;<code>{{result.tag}}</code> is safe to deploy.
         </p>
         <p *ngIf="result.result === EVENT_WARNING">
             <dt-icon class="status-icon status-warning" name="incident"></dt-icon>
-            The service <b>{{result.service}}</b> is safe to deploy. Some dependencies are outdated or not deployed.
+            The service <b>{{result.service}}</b>&nbsp;<code>{{result.tag}}</code> is safe to deploy. Some dependencies are outdated or not deployed.
         </p>
         <p *ngIf="result.result === EVENT_FAILED">
             <dt-icon class="status-icon status-error" name="criticalevent"></dt-icon>
-            The service <b>{{result.service}}</b> is not safe to deploy. Some dependencies are outdated or not deployed.
+            The service <b>{{result.service}}</b>&nbsp;<code>{{result.tag}}</code> is not safe to deploy. Some dependencies are outdated or not deployed.
         </p>
 
         <ktb-dependency-graph [result]="result">
@@ -25,7 +25,7 @@
 
     <ng-container *ngIf="result.dependencies === undefined">
         <dt-icon class="status-icon status-error" name="criticalevent"></dt-icon>
-        No dependencies were detected for the service <b>{{result.service}}</b>.
+        No dependencies were detected for the service <b>{{result.service}}&nbsp;<code>{{result.tag}}</code></b>.
 
         <p> Make sure that Dynatrace monitoring is configured correctly with your keptn installation.</p>
     </ng-container>
