@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { AnalyticsStatus, DeliveryAnalyticsResult, MismatchType } from 'client/app/_models/delivery-analytics-result';
+import { ResultTypes } from 'client/app/_models/result-types';
 import { Trace } from 'client/app/_models/trace';
 
-const STATUS_WITH_DEPENDENCIES = [AnalyticsStatus.Ok, AnalyticsStatus.Mismatch];
+const STATUS_WITH_DEPENDENCIES = [AnalyticsStatus.Ok, AnalyticsStatus.Mismatch, AnalyticsStatus.NotTested];
 
 @Component({
   selector: 'ktb-delivery-analytics-details',
@@ -13,12 +14,14 @@ export class KtbDeliveryAnalyticsDetailsComponent {
 
   result: DeliveryAnalyticsResult;
   hasDependencies: boolean;
+  failedServices: { service: string; result: ResultTypes }[];
 
   @Input()
   set event(event: Trace) {
     this.result = event.data.deliveryAnalytics;
-    // this.result = this.getResultMismatch();
+    // this.result = this.getResultNewerTagDeployed();
     this.hasDependencies = STATUS_WITH_DEPENDENCIES.includes(this.result.status);
+    this.failedServices = this.result.failedServices;
   }
 
   private getResultMissingDependencies(): DeliveryAnalyticsResult {
@@ -28,6 +31,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       tag: '0.5.1',
       testedStage: 'staging',
       targetStage: 'production',
+      failedServices: [],
       dependencies: { parents: [], children: [], relations: [] },
       mismatches: { parents: [], children: [] },
     };
@@ -41,6 +45,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       deployedTag: '0.5.1',
       testedStage: 'staging',
       targetStage: 'production',
+      failedServices: [],
       dependencies: { parents: [], children: [], relations: [] },
       mismatches: { parents: [], children: [] },
     };
@@ -54,6 +59,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       deployedTag: '0.5.3',
       testedStage: 'staging',
       targetStage: 'production',
+      failedServices: [],
       dependencies: { parents: [], children: [], relations: [] },
       mismatches: { parents: [], children: [] },
     };
@@ -64,10 +70,11 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       status: AnalyticsStatus.NotTested,
       service: 'checkout',
       tag: '0.5.1',
-      deployedTag: '0.5.1',
+      deployedTag: '0.5.0',
       testedStage: 'staging',
       targetStage: 'production',
-      dependencies: { parents: [], children: [], relations: [] },
+      failedServices: [{ service: 'fontend', result: ResultTypes.FAILED }],
+      dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
       mismatches: { parents: [], children: [] },
     };
   }
@@ -80,6 +87,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       deployedTag: '0.5.0',
       testedStage: 'staging',
       targetStage: 'production',
+      failedServices: [],
       dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
       mismatches: { parents: [], children: [] },
     };
@@ -93,6 +101,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       deployedTag: '0.5.0',
       testedStage: 'staging',
       targetStage: 'production',
+      failedServices: [],
       dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
       mismatches: { parents: [{ service: 'cache', type: MismatchType.Tag, tagTested: '0.5.1', tagTarget: '0.5.0' }], children: [{ service: 'frontend', type: MismatchType.Dependency, tagTested: '0.5.0' }] },
     };

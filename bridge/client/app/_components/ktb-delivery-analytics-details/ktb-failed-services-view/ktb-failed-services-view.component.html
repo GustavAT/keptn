@@ -1,0 +1,10 @@
+<span i18n>The following services did not pass the evaluation:</span>
+
+<ul>
+    <li *ngFor="let failedService of failedServices;" i18n>
+        <b>{{failedService.service}}</b>:
+        <span [ngClass]="{'error': failedService.result === FAILED, 'warning': failedService.result === WARNING}">
+            {{failedService.result}}
+        </span>
+    </li>
+</ul>

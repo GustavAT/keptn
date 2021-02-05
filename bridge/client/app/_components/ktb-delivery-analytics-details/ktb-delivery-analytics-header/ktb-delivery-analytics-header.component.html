@@ -10,7 +10,7 @@
         </span>
         <br>
         <span i18n>
-            Please make sure that Dynatrace Monitoring is configured correctly in your keptn installation.
+            Please make sure that Dynatrace Monitoring is configured correctly with your keptn installation.
         </span>
     </ng-container>
     <ng-container *ngIf="status === STATUS_TAG_DEPLOYED || status === STATUS_NEWER_TAG_DEPLOYED">
@@ -27,20 +27,23 @@
             <code>{{deployedTag}}</code> is already deployed in <b>{{targetStage}}</b>.
         </span>
     </ng-container>
+    <ng-container *ngIf="status === STATUS_CONFIGURATION_NOT_EXISTING">
+        <h3>
+            <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
+            <span i18n>No possible configuration found</span>
+        </h3>
+        <span i18n>
+            No configuration for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> and <b>its dependencies</b> was found in
+            <b>{{testedStage}}</b>.
+        </span>
+    </ng-container>
     <ng-container *ngIf="status === STATUS_NOT_TESTED">
         <h3>
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
             <span i18n><b>{{service}}</b> dependency evaluation was not successful</span>
         </h3>
-        <span i18n>
-            <b>{{service}}</b>&nbsp;<code>{{tag}}</code> and <b>its dependencies</b> were not evaluated
-            successfully when deployed together in <b>{{testedStage}}</b>.
-        </span>
-        <br>
-        <span i18n>
-            Deploying <b>{{service}}</b>&nbsp;<code>{{tag}}</code> might not be compatible with other
-            services.
-        </span>
+        <ktb-failed-services-view [failedServices]="failedServices">
+        </ktb-failed-services-view>
     </ng-container>
     <ng-container *ngIf="status === STATUS_MISMATCH && hasParentMismatches">
         <h3>
@@ -53,11 +56,6 @@
             They should be updated before deploying <b>{{service}}</b>&nbsp;<code>{{tag}}</code> to
             <b>{{targetStage}}</b>.
         </span>
-        <br>
-        <span i18n>
-            The following dependencies have been detected and analyzed for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
-            in <b>{{testedStage}}</b>:
-        </span>
     </ng-container>
     <ng-container *ngIf="status === STATUS_MISMATCH && !hasParentMismatches">
         <h3>
@@ -69,11 +67,6 @@
             in <b>{{targetStage}}</b>.
             They can be updated after deploying <b>{{service}}</b>&nbsp;<code>{{tag}}</code> to <b>{{targetStage}}</b>.
         </span>
-        <br>
-        <span i18n>
-            The following dependencies have been detected and analyzed for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
-            in <b>{{testedStage}}</b>:
-        </span>
     </ng-container>
     <ng-container *ngIf="status === STATUS_OK">
         <h3>
@@ -82,9 +75,5 @@
         </h3>
         <span i18n>All dependencies are up-to-date.</span>
         <br>
-        <span i18n>
-            The following dependencies have been detected and analyzed for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
-            in <b>{{testedStage}}</b>:
-        </span>
     </ng-container>
 </div>
