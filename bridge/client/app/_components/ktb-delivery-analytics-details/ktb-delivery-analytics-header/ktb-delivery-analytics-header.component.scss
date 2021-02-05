@@ -1,13 +1,19 @@
 @import '~@dynatrace/barista-components/style/main';
 
-div {
-    padding: 0;
+.container {
     margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+h3 {
+    margin: 5px 0;
 }
 
 .status-icon {
     position: relative;
-    top: 5px;
+    top: 3px;
+    left: -2px;
     width: 20px;
 }
 
@@ -19,6 +25,6 @@ div {
     fill: $yellow-600;
 }
 
-.status-ok {
+.status-success {
     fill: $green-600;
 }

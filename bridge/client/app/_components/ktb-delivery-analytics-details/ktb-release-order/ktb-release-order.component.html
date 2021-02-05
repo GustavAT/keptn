@@ -1,47 +1,48 @@
 <div>
-    <h3> Deployment Order </h3>
+    <h3 i18n> Recommended deployment order </h3>
+    <span i18n>Deploy to services in the following order to <b>{{targetStage}}</b>:</span>
 
     <ul>
         <!-- Parent dependencies -->
         <ng-container *ngIf="parentMismatches.length > 0; else noParentMismatches">
             <li *ngFor="let mismatch of parentMismatches; index as i; last as isLast"
-                [ngClass]="{'group-separator': isLast, 'error': true}">
-                <ng-container *ngIf="mismatch.type === DEPENDENCY_MISMATCH">
-                    Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
-                </ng-container>
+                [ngClass]="{'group-separator': isLast, 'error': true}"
+                i18n>
+                Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
                 <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
-                    Update <b>{{mismatch.service}}</b> from <code>{{mismatch.tagTarget}}</code> to
-                    <code>{{mismatch.tagTested}}</code>
+                    (Currently deployed tag <code>{{mismatch.tagTarget}}</code>)
                 </ng-container>
             </li>
         </ng-container>
 
         <ng-template #noParentMismatches>
-            <li *ngIf="hasParents" class="group-separator success"> All parent dependencies are up-to-date </li>
-            <li *ngIf="!hasParents" class="group-separator other"> No parent dependencies </li>
+            <li *ngIf="hasParents" class="group-separator success" i18n> All parent-dependencies are up-to-date </li>
+            <li *ngIf="!hasParents" class="group-separator other" i18n> No parent-dependencies</li>
         </ng-template>
 
         <!-- Target service -->
-        <li class="group-separator status">Deploy <b>{{serviceName}}</b>&nbsp;<code>{{tag}}</code>
+        <li class="group-separator status" i18n>
+            Deploy <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
+            <ng-container *ngIf="deployedTag !== undefined">
+                (Currently deployed tag <code>{{deployedTag}}</code>)
+            </ng-container>
         </li>
 
         <!-- Child dependencies -->
         <ng-container *ngIf="childMismatches.length > 0; else noChildMismatches">
             <li *ngFor="let mismatch of childMismatches; index as i; last as isLast"
-                [ngClass]="{'group-separator': isLast, 'warning': true}">
-                <ng-container *ngIf="mismatch.type === DEPENDENCY_MISMATCH">
-                    Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
-                </ng-container>
+                [ngClass]="{'group-separator': isLast, 'error': true}"
+                i18n>
+                Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
                 <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
-                    Update <b>{{mismatch.service}}</b> from <code>{{mismatch.tagTarget}}</code> to
-                    <code>{{mismatch.tagTested}}</code>
+                    (Currently deployed tag <code>{{mismatch.tagTarget}}</code>)
                 </ng-container>
             </li>
         </ng-container>
 
         <ng-template #noChildMismatches>
-            <li *ngIf="hasChildren" class="success"> All child dependencies are up-to-date </li>
-            <li *ngIf="!hasChildren" class="other"> No child dependencies </li>
+            <li *ngIf="hasChildren" class="success" i18n> All child-dependencies are up-to-date </li>
+            <li *ngIf="!hasChildren" class="other" i18n> No child-dependencies</li>
         </ng-template>
     </ul>
 </div>

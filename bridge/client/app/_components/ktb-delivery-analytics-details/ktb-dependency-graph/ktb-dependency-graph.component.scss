@@ -1,5 +1,10 @@
 @import '~@dynatrace/barista-components/style/main';
 
+:host {
+    margin: 15px 0;
+    display: block;
+}
+
 .graph {
     width: 100%;
     user-select: none;
@@ -27,16 +32,18 @@
     background: $red-500;
 }
 
-.legend-warning {
-    background: $yellow-600;
-}
-
 .legend-service {
     background: $blue-600;
 }
 
 .legend-other {
     background: $gray-600;
+}
+
+.legend-relation {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNDAxLjk0OHB4IiBoZWlnaHQ9IjQwMS45NDlweCIgdmlld0JveD0iMCAwIDQwMS45NDggNDAxLjk0OSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDAxLjk0OCA0MDEuOTQ5OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPGc+CgkJPGcgaWQ9IkxheWVyXzVfNTVfIj4KCQkJPHBhdGggZD0iTTM5NywxOTAuNzM0TDIyOC43MzgsNzMuNDQ0Yy02LjU5OS01LjYzMi0xMS45OTYtMy4xNDctMTEuOTk2LDUuNTI4djQ5LjA2OGMwLDguNjcyLTcuMDk5LDE1Ljc3LTE1Ljc3LDE1Ljc3ICAgICBsLTEwNC4xNzYsMC4xNTZIMTUuNjl2MC4xMjVDNy4wNTEsMTQ0LjEzOSwwLjAwMiwxNTEuMjE0LDAsMTU5Ljg1N2wwLjAwMiw4Mi43ODljMCw4LjY3Myw3LjA5NSwxNS43NzEsMTUuNzY1LDE1Ljc3MSAgICAgbDE4My40MjYtMC4yNzVoMS44MzRjOC42NDcsMC4wMjgsMTUuNzE3LDcuMTA3LDE1LjcxNywxNS43NjV2NDkuMDY3YzAsOC42NzUsNS4zOTcsMTEuMTYzLDExLjk5Myw1LjUzNWwxNjguMjY1LTExNy4yOTQgICAgIEM0MDMuNTk4LDIwNS41NzksNDAzLjU5OCwxOTYuMzY3LDM5NywxOTAuNzM0eiIvPgoJCTwvZz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4=');
+    background-size: cover;
+    height: 13px;
 }
 
 .legend-error-deploy {

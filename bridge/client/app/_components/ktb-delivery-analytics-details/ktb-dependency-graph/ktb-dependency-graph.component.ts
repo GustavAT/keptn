@@ -6,9 +6,50 @@ import { DtColors } from '@dynatrace/barista-components/theming';
 
 const SERVICE_COLOR = DtColors.BLUE_600;
 const ERROR_COLOR = DtColors.RED_600;
-const WARNING_COLOR = DtColors.YELLOW_600;
 const COLOR_IGNORE = DtColors.GRAY_600;
 const FONT_COLOR = DtColors.GRAY_900;
+
+const createNode = (name: string, color: string, style: 'solid' | 'dashed'): string =>
+  `node [shape=ellipse, fontname=monospace, fontcolor="${FONT_COLOR}", color="${color}", style=${style}] "${name}";`;
+
+const generateDotNotation = ({ service, dependencies, mismatches }: DeliveryAnalyticsResult): string => {
+  const nodes = [service, ...dependencies.parents, ...dependencies.children];
+  const relations = dependencies.relations;
+  const parentMismatches = mismatches.parents;
+  const childMismatches = mismatches.children;
+
+  const items: string[] = [];
+
+  for (let node of nodes) {
+    let nodeString: string;
+    if (node === service) {
+      nodeString = createNode(node, SERVICE_COLOR, 'solid');
+    } else {
+      const parentMismatch = parentMismatches.find((value) => value.service === node);
+      if (parentMismatch) {
+        nodeString = createNode(node, ERROR_COLOR, parentMismatch.type === MismatchType.Tag ? 'solid' : 'dashed');
+      } else {
+        const childMismatch = childMismatches.find((value) => value.service === node);
+        if (childMismatch) {
+          nodeString = createNode(node, ERROR_COLOR, childMismatch.type === MismatchType.Tag ? 'solid' : 'dashed');
+        } else {
+          nodeString = createNode(node, COLOR_IGNORE, 'solid');
+        }
+      }
+    }
+
+    items.push(nodeString);
+  }
+
+  for (let { from, to } of relations) {
+    items.push(`"${from}"->"${to}" [splines=curved];`);
+  }
+
+  return `digraph {
+      rankdir=LR;
+      ${items.join('\n')}
+    }`;
+};
 
 @Component({
   selector: 'ktb-dependency-graph',
@@ -17,74 +58,39 @@ const FONT_COLOR = DtColors.GRAY_900;
 })
 export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
 
-  private _result: DeliveryAnalyticsResult;
-  private _graph: string;
+  service: string;
+  tag: string;
+  testedStage: string;
+  targetStage: string;
 
   @ViewChild('dependencyGraph', { static: false })
   container: ElementRef;
 
   @Input()
   set result(result: DeliveryAnalyticsResult) {
-    this._result = result;
+    this.service = result.service;
+    this.tag = result.tag;
+    this.testedStage = result.testedStage;
+    this.targetStage = result.targetStage;
 
-    this.initializeGraph();
+    this._graph = generateDotNotation(result);
   }
 
+  private _graph: string;
+
   ngAfterViewInit() {
-    this.renderGraph();
+    this.renderGraph(this._graph);
   }
 
   ngOnInit() {
+    // Path to graphviz webassembly - required for rendering the dot-notation with d3-graphviz
     wasmFolder('/assets/@hpcc-js/wasm/dist/');
   }
 
-  private initializeGraph() {
-    const dependencies = this._result.dependencies;
-    const nodes = [...dependencies.parents, ...dependencies.children, this._result.service];
-    const edges = this._result.dependencies.edges;
-    const pMismatches = this._result.parentResult;
-    const cMimmatches = this._result.childResult;
-
-    const dotNodes: string[] = [];
-
-    for (let node of nodes) {
-      let nodeString: string;
-      if (node === this._result.service) {
-        nodeString = `node [shape=ellipse, fontname=monospace, fontcolor="${FONT_COLOR}", color="${SERVICE_COLOR}", style=solid] "${node}";`;
-      } else {
-        const pM = pMismatches.find((value) => value.service === node);
-        if (pM) {
-          nodeString = `node [shape=ellipse, fontname=monospace, fontcolor="${FONT_COLOR}", color="${ERROR_COLOR}", style=${pM.type === MismatchType.Tag ? 'solid' : 'dashed'}] "${node}";`;
-        } else {
-          const cM = cMimmatches.find((value) => value.service === node);
-          if (cM) {
-            nodeString = `node [shape=ellipse, fontname=monospace, fontcolor="${FONT_COLOR}", color="${WARNING_COLOR}", style=${cM.type === MismatchType.Tag ? 'solid' : 'dashed'}] "${node}";`;
-          } else {
-            nodeString = `node [shape=ellipse, fontname=monospace, fontcolor="${COLOR_IGNORE}", color="${COLOR_IGNORE}", style=solid] "${node}";`;
-          }
-        }
-      }
-
-      dotNodes.push(nodeString);
-    }
-
-    const dotEdges: string[] = [];
-    for (let { v, w } of edges) {
-      dotEdges.push(`"${v}"->"${w}" [penwidth=0.8, arrowsize=0.8];`);
-    }
-
-    this._graph = `
-    digraph {
-      rankdir=LR;
-      ${dotNodes.join('\n')}
-      ${dotEdges.join('\n')}
-    }`;
-  }
-
-  private renderGraph() {
+  private renderGraph(dotNotation: string) {
     graphviz(this.container.nativeElement)
       .width('100%')
       .fit(true)
-      .renderDot(this._graph);
+      .renderDot(dotNotation);
   }
 }

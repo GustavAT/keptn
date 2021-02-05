@@ -1,137 +1,204 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { DeliveryAnalyticsResult, MismatchType } from 'client/app/_models/delivery-analytics-result';
-import { ResultTypes } from 'client/app/_models/result-types';
+import { AnalyticsStatus, DeliveryAnalyticsResult, MismatchType } from 'client/app/_models/delivery-analytics-result';
 import { Trace } from 'client/app/_models/trace';
+
+const STATUS_WITH_DEPENDENCIES = [AnalyticsStatus.Ok, AnalyticsStatus.Mismatch];
 
 @Component({
   selector: 'ktb-delivery-analytics-details',
   templateUrl: './ktb-delivery-analytics-details.component.html',
-  styleUrls: ['./ktb-delivery-analytics-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KtbDeliveryAnalyticsDetailsComponent {
 
-  readonly EVENT_PASSED = ResultTypes.PASSED;
-  readonly EVENT_FAILED = ResultTypes.FAILED;
-  readonly EVENT_WARNING = ResultTypes.WARNING;
-
-  result: DeliveryAnalyticsResult | undefined;
+  result: DeliveryAnalyticsResult;
+  hasDependencies: boolean;
 
   @Input()
   set event(event: Trace) {
     this.result = event.data.deliveryAnalytics;
+    // this.result = this.getResultMismatch();
+    this.hasDependencies = STATUS_WITH_DEPENDENCIES.includes(this.result.status);
   }
 
-  /**
-   * No tested release-bracket
-   */
-  private getResultNoTestedRB(): DeliveryAnalyticsResult {
+  private getResultMissingDependencies(): DeliveryAnalyticsResult {
     return {
-      result: ResultTypes.FAILED,
+      status: AnalyticsStatus.MissingDependencies,
       service: 'checkout',
       tag: '0.5.1',
+      testedStage: 'staging',
+      targetStage: 'production',
+      dependencies: { parents: [], children: [], relations: [] },
+      mismatches: { parents: [], children: [] },
     };
   }
 
-  private getResultParentsMissing(): DeliveryAnalyticsResult {
+  private getResultTagDeployed(): DeliveryAnalyticsResult {
     return {
-      result: ResultTypes.FAILED,
+      status: AnalyticsStatus.TagDeployed,
       service: 'checkout',
       tag: '0.5.1',
-      dependencies: {
-        parents: ['carts', 'cache', 'payment', 'product-catalog'],
-        children: ['frontend'],
-        edges: [
-          { v: 'frontend', w: 'checkout' },
-          { v: 'checkout', w: 'carts' },
-          { v: 'checkout', w: 'payment' },
-          { v: 'checkout', w: 'product-catalog' },
-          { v: 'carts', w: 'cache' },
-        ],
-      },
-      parentResult: [
-        { service: 'payment', tagTested: '0.5.0', type: MismatchType.Dependency },
-        { service: 'cache', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
-      ],
-      childResult: [],
+      deployedTag: '0.5.1',
+      testedStage: 'staging',
+      targetStage: 'production',
+      dependencies: { parents: [], children: [], relations: [] },
+      mismatches: { parents: [], children: [] },
     };
   }
 
-  private getResultChildrenMissing(): DeliveryAnalyticsResult {
+  private getResultNewerTagDeployed(): DeliveryAnalyticsResult {
     return {
-      result: ResultTypes.WARNING,
-      service: 'cache',
+      status: AnalyticsStatus.NewerTagDeployed,
+      service: 'checkout',
       tag: '0.5.1',
-      dependencies: {
-        parents: [],
-        children: ['carts', 'checkout', 'frontend'],
-        edges: [
-          { v: 'frontend', w: 'checkout' },
-          { v: 'checkout', w: 'carts' },
-          { v: 'carts', w: 'cache' },
-        ],
-      },
-      parentResult: [],
-      childResult: [
-        { service: 'carts', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
-        { service: 'frontend', tagTested: '0.5.0', type: MismatchType.Dependency },
-      ],
+      deployedTag: '0.5.3',
+      testedStage: 'staging',
+      targetStage: 'production',
+      dependencies: { parents: [], children: [], relations: [] },
+      mismatches: { parents: [], children: [] },
     };
   }
 
-  private getResultAllMissing(): DeliveryAnalyticsResult {
+  private getResultNotTested(): DeliveryAnalyticsResult {
     return {
-      result: ResultTypes.FAILED,
-      service: 'carts',
+      status: AnalyticsStatus.NotTested,
+      service: 'checkout',
       tag: '0.5.1',
-      dependencies: {
-        parents: ['cache'],
-        children: ['checkout', 'frontend'],
-        edges: [
-          { v: 'frontend', w: 'checkout' },
-          { v: 'checkout', w: 'carts' },
-          { v: 'carts', w: 'cache' },
-        ],
-      },
-      parentResult: [
-        { service: 'cache', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
-      ],
-      childResult: [
-        { service: 'frontend', tagTested: '0.5.0', type: MismatchType.Dependency },
-      ],
+      deployedTag: '0.5.1',
+      testedStage: 'staging',
+      targetStage: 'production',
+      dependencies: { parents: [], children: [], relations: [] },
+      mismatches: { parents: [], children: [] },
     };
   }
 
-  private getResultNoParentsAndChildren(): DeliveryAnalyticsResult {
+  private getResultOk(): DeliveryAnalyticsResult {
     return {
-      result: ResultTypes.PASSED,
-      service: 'cache',
+      status: AnalyticsStatus.Ok,
+      service: 'checkout',
       tag: '0.5.1',
-      dependencies: {
-        parents: [],
-        children: [],
-        edges: [],
-      },
-      parentResult: [],
-      childResult: [],
+      deployedTag: '0.5.0',
+      testedStage: 'staging',
+      targetStage: 'production',
+      dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
+      mismatches: { parents: [], children: [] },
     };
   }
 
-  private getResultAllOk(): DeliveryAnalyticsResult {
+  private getResultMismatch(): DeliveryAnalyticsResult {
     return {
-      result: ResultTypes.PASSED,
-      service: 'carts',
+      status: AnalyticsStatus.Mismatch,
+      service: 'checkout',
       tag: '0.5.1',
-      dependencies: {
-        parents: ['cache'],
-        children: ['checkout'],
-        edges: [
-          { v: 'checkout', w: 'carts' },
-          { v: 'carts', w: 'cache' },
-        ],
-      },
-      parentResult: [],
-      childResult: [],
+      deployedTag: '0.5.0',
+      testedStage: 'staging',
+      targetStage: 'production',
+      dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
+      mismatches: { parents: [{ service: 'cache', type: MismatchType.Tag, tagTested: '0.5.1', tagTarget: '0.5.0' }], children: [{ service: 'frontend', type: MismatchType.Dependency, tagTested: '0.5.0' }] },
     };
   }
+
+
+
+  // private getResultParentsMissing(): DeliveryAnalyticsResult {
+  //   return {
+  //     result: ResultTypes.FAILED,
+  //     service: 'checkout',
+  //     tag: '0.5.1',
+  //     dependencies: {
+  //       parents: ['carts', 'cache', 'payment', 'product-catalog'],
+  //       children: ['frontend'],
+  //       edges: [
+  //         { v: 'frontend', w: 'checkout' },
+  //         { v: 'checkout', w: 'carts' },
+  //         { v: 'checkout', w: 'payment' },
+  //         { v: 'checkout', w: 'product-catalog' },
+  //         { v: 'carts', w: 'cache' },
+  //       ],
+  //     },
+  //     parentResult: [
+  //       { service: 'payment', tagTested: '0.5.0', type: MismatchType.Dependency },
+  //       { service: 'cache', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
+  //     ],
+  //     childResult: [],
+  //   };
+  // }
+
+  // private getResultChildrenMissing(): DeliveryAnalyticsResult {
+  //   return {
+  //     result: ResultTypes.WARNING,
+  //     service: 'cache',
+  //     tag: '0.5.1',
+  //     dependencies: {
+  //       parents: [],
+  //       children: ['carts', 'checkout', 'frontend'],
+  //       edges: [
+  //         { v: 'frontend', w: 'checkout' },
+  //         { v: 'checkout', w: 'carts' },
+  //         { v: 'carts', w: 'cache' },
+  //       ],
+  //     },
+  //     parentResult: [],
+  //     childResult: [
+  //       { service: 'carts', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
+  //       { service: 'frontend', tagTested: '0.5.0', type: MismatchType.Dependency },
+  //     ],
+  //   };
+  // }
+
+  // private getResultAllMissing(): DeliveryAnalyticsResult {
+  //   return {
+  //     result: ResultTypes.FAILED,
+  //     service: 'carts',
+  //     tag: '0.5.1',
+  //     dependencies: {
+  //       parents: ['cache'],
+  //       children: ['checkout', 'frontend'],
+  //       edges: [
+  //         { v: 'frontend', w: 'checkout' },
+  //         { v: 'checkout', w: 'carts' },
+  //         { v: 'carts', w: 'cache' },
+  //       ],
+  //     },
+  //     parentResult: [
+  //       { service: 'cache', tagTested: '0.5.3', tagTarget: '0.5.0', type: MismatchType.Tag },
+  //     ],
+  //     childResult: [
+  //       { service: 'frontend', tagTested: '0.5.0', type: MismatchType.Dependency },
+  //     ],
+  //   };
+  // }
+
+  // private getResultNoParentsAndChildren(): DeliveryAnalyticsResult {
+  //   return {
+  //     result: ResultTypes.PASSED,
+  //     service: 'cache',
+  //     tag: '0.5.1',
+  //     dependencies: {
+  //       parents: [],
+  //       children: [],
+  //       edges: [],
+  //     },
+  //     parentResult: [],
+  //     childResult: [],
+  //   };
+  // }
+
+  // private getResultAllOk(): DeliveryAnalyticsResult {
+  //   return {
+  //     result: ResultTypes.PASSED,
+  //     service: 'carts',
+  //     tag: '0.5.1',
+  //     dependencies: {
+  //       parents: ['cache'],
+  //       children: ['checkout'],
+  //       edges: [
+  //         { v: 'checkout', w: 'carts' },
+  //         { v: 'carts', w: 'cache' },
+  //       ],
+  //     },
+  //     parentResult: [],
+  //     childResult: [],
+  //   };
+  // }
 }

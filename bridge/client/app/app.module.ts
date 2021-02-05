@@ -89,6 +89,7 @@ import { KtbEnvironmentViewComponent } from './_views/ktb-environment-view/ktb-e
 import { KtbIntegrationViewComponent } from './_views/ktb-integration-view/ktb-integration-view.component';
 import { KtbStageOverviewComponent } from './_components/ktb-stage-overview/ktb-stage-overview.component';
 import { KtbStageDetailsComponent } from './_components/ktb-stage-details/ktb-stage-details.component';
+import { KtbDeliveryAnalyticsHeaderComponent } from './_components/ktb-delivery-analytics-details/ktb-delivery-analytics-header/ktb-delivery-analytics-header.component';
 import { KtbSequenceViewComponent } from "./_views/ktb-sequence-view/ktb-sequence-view.component";
 import { KtbServiceViewComponent } from "./_views/ktb-service-view/ktb-service-view.component";
 import { KeptnUrlPipe } from './_pipes/keptn-url.pipe';
@@ -136,6 +137,7 @@ registerLocaleData(localeEn, 'en');
     KtbMarkdownComponent,
     KtbSequenceTimelineComponent,
     KtbEnvironmentViewComponent,
+    KtbDeliveryAnalyticsHeaderComponent,
     KtbStageOverviewComponent,
     KtbIntegrationViewComponent,
     KtbStageDetailsComponent,

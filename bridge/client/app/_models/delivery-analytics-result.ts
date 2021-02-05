@@ -1,5 +1,3 @@
-import { ResultTypes } from './result-types';
-
 export const enum MismatchType {
     Tag,
     Dependency,
@@ -12,15 +10,29 @@ export interface Mismatch {
     tagTarget?: string;
 }
 
+export const enum AnalyticsStatus {
+    MissingDependencies,
+    TagDeployed,
+    NewerTagDeployed,
+    NotTested,
+    Mismatch,
+    Ok,
+};
+
 export interface DeliveryAnalyticsResult {
-    result: ResultTypes;
+    status: AnalyticsStatus;
     service: string;
     tag: string;
-    parentResult?: Mismatch[];
-    childResult?: Mismatch[];
-    dependencies?: {
+    deployedTag?: string;
+    testedStage: string;
+    targetStage: string;
+    dependencies: {
         parents: string[];
         children: string[];
-        edges: { v: string; w: string; }[];
+        relations: { from: string; to: string; }[];
     };
+    mismatches: {
+        parents: Mismatch[];
+        children: Mismatch[];
+    };    
 }
