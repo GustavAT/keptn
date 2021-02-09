@@ -342,8 +342,8 @@ github.com/grpc-ecosystem/grpc-gateway v1.9.0/go.mod h1:vNeuVxBJEsws4ogUvrchl83t
 github.com/grpc-ecosystem/grpc-gateway v1.9.5/go.mod h1:vNeuVxBJEsws4ogUvrchl83t/GYV9WGTSLVdBhOQFDY=
 github.com/hashicorp/errwrap v0.0.0-20141028054710-7554cd9344ce/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
 github.com/hashicorp/go-multierror v0.0.0-20161216184304-ed905158d874/go.mod h1:JMRHfdO9jKNzS/+BTlxCjKNQHg/jZAft8U7LloJvN7I=
-github.com/hashicorp/go-version v1.2.0 h1:3vNe/fWF5CBgRIguda1meWhsZHy3m8gCJ5wx+dIzX/E=
-github.com/hashicorp/go-version v1.2.0/go.mod h1:fltr4n8CU8Ke44wwGCBoEymUuxUHl09ZGVZPK5anwXA=
+github.com/hashicorp/go-version v1.2.1 h1:zEfKbn2+PDgroKdiOzqiE8rsmLqU2uwi5PB5pBJ3TkI=
+github.com/hashicorp/go-version v1.2.1/go.mod h1:fltr4n8CU8Ke44wwGCBoEymUuxUHl09ZGVZPK5anwXA=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.3 h1:YPkqC67at8FYaadspW/6uE0COsBxS2656RLEr8Bppgk=
@@ -378,8 +378,6 @@ github.com/kelseyhightower/envconfig v1.4.0/go.mod h1:cccZRl6mQpaq41TPp5QxidR+Sa
 github.com/keptn/go-utils v0.6.3-0.20201021140127-a974f80c5982/go.mod h1:jD+ZvrkwYyDMgeKANzVZsBSYgjYQxTJvxw/RB3vYFAE=
 github.com/keptn/go-utils v0.8.0-alpha.0.20210203161317-67ac0f2ba06d h1:xipClYXVwXpJ9VbBQVR8klPAEUhUUZjOZzXswjXC4wM=
 github.com/keptn/go-utils v0.8.0-alpha.0.20210203161317-67ac0f2ba06d/go.mod h1:CC9l+2jIa6xyfEPJa6oklL0uiKQNb9C1PpbVO/tt5eI=
-github.com/keptn/kubernetes-utils v0.8.0-alpha h1:lO+LFARbXO4pDO7a2mgExyhVXfUlOzQQiCcvRck5fVo=
-github.com/keptn/kubernetes-utils v0.8.0-alpha/go.mod h1:SBBDjHietAY/5O40Epep9k+45l91XhYPy1Vdj0ZIrMM=
 github.com/keptn/kubernetes-utils v0.8.0-alpha.0.20210208085038-093c00d82da4 h1:JVt8SxC1UsPdA2TE+xQGKC0K20dTyFL8/p7kS/5kXB0=
 github.com/keptn/kubernetes-utils v0.8.0-alpha.0.20210208085038-093c00d82da4/go.mod h1:Up8oRAI3+278NpTHg1/PPjNEQThnhJF0lehdDXnnKzQ=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
