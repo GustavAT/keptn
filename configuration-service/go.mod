@@ -9,9 +9,9 @@ require (
 	github.com/go-openapi/errors v0.19.2
 	github.com/go-openapi/loads v0.19.4
 	github.com/go-openapi/runtime v0.19.4
-	github.com/go-openapi/spec v0.19.3
+	github.com/go-openapi/spec v0.20.3
 	github.com/go-openapi/strfmt v0.19.3
-	github.com/go-openapi/swag v0.19.5
+	github.com/go-openapi/swag v0.19.14
 	github.com/go-openapi/validate v0.19.5
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/gophercloud/gophercloud v0.9.0 // indirect
@@ -28,7 +28,7 @@ require (
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	go.mongodb.org/mongo-driver v1.4.6
 	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975 // indirect
-	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
+	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
