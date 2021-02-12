@@ -5,12 +5,12 @@
             <span i18n>Missing dependencies for <b>{{service}}</b></span>
         </h3>
         <span i18n>
-            Dependencies for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> could not be loaded for
+            The dependencies for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> could not be fetched for
             <b>{{testedStage}}</b>.
         </span>
         <br>
         <span i18n>
-            Please make sure that Dynatrace Monitoring is configured correctly with your keptn installation.
+            Please make sure that Dynatrace Monitoring is configured correctly in your keptn installation.
         </span>
     </ng-container>
     <ng-container *ngIf="status === STATUS_TAG_DEPLOYED || status === STATUS_NEWER_TAG_DEPLOYED">
@@ -30,10 +30,10 @@
     <ng-container *ngIf="status === STATUS_CONFIGURATION_NOT_EXISTING">
         <h3>
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
-            <span i18n>No possible configuration found</span>
+            <span i18n><b>{{service}}</b> release not found</span>
         </h3>
         <span i18n>
-            No configuration for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> and <b>its dependencies</b> was found in
+            No evaluated release for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> and <b>its dependencies</b> was found in
             <b>{{testedStage}}</b>.
         </span>
     </ng-container>

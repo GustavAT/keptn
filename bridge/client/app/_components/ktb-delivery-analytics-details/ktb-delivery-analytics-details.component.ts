@@ -19,7 +19,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
   @Input()
   set event(event: Trace) {
     this.result = event.data.deliveryAnalytics;
-    // this.result = this.getResultNewerTagDeployed();
+    // this.result = this.getResultMissingDependencies();
     this.hasDependencies = STATUS_WITH_DEPENDENCIES.includes(this.result.status);
     this.failedServices = this.result.failedServices;
   }
@@ -27,8 +27,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
   private getResultMissingDependencies(): DeliveryAnalyticsResult {
     return {
       status: AnalyticsStatus.MissingDependencies,
-      service: 'checkout',
-      tag: '0.5.1',
+      service: 'email-service',
+      tag: '0.7.3',
       testedStage: 'staging',
       targetStage: 'production',
       failedServices: [],

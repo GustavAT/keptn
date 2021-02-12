@@ -42,7 +42,7 @@ const generateDotNotation = ({ service, dependencies, mismatches }: DeliveryAnal
   }
 
   for (let { from, to } of relations) {
-    items.push(`"${from}"->"${to}" [splines=curved];`);
+    items.push(`"${from}"->"${to}" [splines=true];`);
   }
 
   return `digraph {
