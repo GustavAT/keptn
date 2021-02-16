@@ -42,7 +42,7 @@
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
             <span i18n><b>{{service}}</b> dependency evaluation was not successful</span>
         </h3>
-        <ktb-failed-services-view [failedServices]="failedServices">
+        <ktb-failed-services-view [evaluationResult]="problematicServices">
         </ktb-failed-services-view>
     </ng-container>
     <ng-container *ngIf="status === STATUS_MISMATCH && hasParentMismatches">

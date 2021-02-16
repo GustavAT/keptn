@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { EvaluationResult } from 'client/app/_models/delivery-analytics-result';
 import { ResultTypes } from 'client/app/_models/result-types';
 
 @Component({
@@ -12,5 +13,5 @@ export class KtbFailedServicesViewComponent {
   readonly WARNING = ResultTypes.WARNING;
 
   @Input()
-  failedServices: { service: string, result: ResultTypes }[];
+  evaluationResult: EvaluationResult[];
 }

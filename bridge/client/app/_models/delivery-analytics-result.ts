@@ -22,6 +22,12 @@ export const enum AnalyticsStatus {
     Ok = 'Ok',
 };
 
+export interface EvaluationResult {
+    service: string;
+    tag: string;
+    result: ResultTypes;
+} 
+
 export interface DeliveryAnalyticsResult {
     status: AnalyticsStatus;
     service: string;
@@ -29,7 +35,7 @@ export interface DeliveryAnalyticsResult {
     deployedTag?: string;
     testedStage: string;
     targetStage: string;
-    failedServices: { service: string, result: ResultTypes }[];
+    problematicServices: EvaluationResult[];
     dependencies: {
         parents: string[];
         children: string[];

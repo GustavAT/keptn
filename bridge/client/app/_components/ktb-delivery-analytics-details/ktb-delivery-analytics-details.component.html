@@ -3,12 +3,12 @@
 
 <ng-container *ngIf="hasDependencies">
     <br>
+
+    <ktb-release-order *ngIf="!hasProblematicServices" [result]="result">
+    </ktb-release-order>
+
+    <br>
     
     <ktb-dependency-graph [result]="result">
     </ktb-dependency-graph>
-
-    <br>
-
-    <ktb-release-order *ngIf="failedServices.length === 0" [result]="result">
-    </ktb-release-order>
 </ng-container>

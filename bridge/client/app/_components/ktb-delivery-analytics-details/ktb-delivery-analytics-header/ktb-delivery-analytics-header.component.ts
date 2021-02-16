@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { AnalyticsStatus, DeliveryAnalyticsResult } from 'client/app/_models/delivery-analytics-result';
+import { AnalyticsStatus, DeliveryAnalyticsResult, EvaluationResult } from 'client/app/_models/delivery-analytics-result';
 import { ResultTypes } from 'client/app/_models/result-types';
 
 @Component({
@@ -24,7 +24,7 @@ export class KtbDeliveryAnalyticsHeaderComponent {
   deployedTag: string | undefined;
   testedStage: string;
   targetStage: string;
-  failedServices: { service: string; result: ResultTypes }[];
+  problematicServices: EvaluationResult[];
 
   hasParentMismatches: boolean;
 
@@ -36,7 +36,7 @@ export class KtbDeliveryAnalyticsHeaderComponent {
     this.deployedTag = result.deployedTag;
     this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
-    this.failedServices = result.failedServices;
+    this.problematicServices = result.problematicServices;
     this.hasParentMismatches = result.mismatches.parents.length > 0;
   }
 
