@@ -1,16 +1,16 @@
-<p i18n>
-    The following dependencies were detected and analyzed for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
-    in <b>{{testedStage}}</b>:
-</p>
+<h3 i18n>
+    Dependenies for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
+    in <b>{{testedStage}}</b>
+</h3>
 
 <div #dependencyGraph class="graph"></div>
 
 <div class="legend">
-    <div class="legend-item">
+    <div *ngIf="hasTagMismatch" class="legend-item">
         <span class="legend-item-indicator legend-error"></span>
         <span i18n>Outdated in {{targetStage}}</span>
     </div>
-    <div class="legend-item">
+    <div *ngIf="hasDependencyMismatch" class="legend-item">
         <span class="legend-item-indicator legend-error-deploy"></span>
         <span i18n>Not deployed in {{targetStage}}</span>
     </div>
@@ -18,7 +18,7 @@
         <span class="legend-item-indicator legend-service"></span>
         <span i18n>Service to deploy</span>
     </div>
-    <div class="legend-item">
+    <div *ngIf="hasNoIssues" class="legend-item">
         <span class="legend-item-indicator legend-other"></span>
         <span i18n>No issues</span>
     </div>

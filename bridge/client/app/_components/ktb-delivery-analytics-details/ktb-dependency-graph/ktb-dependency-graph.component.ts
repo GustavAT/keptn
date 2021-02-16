@@ -63,6 +63,10 @@ export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
   testedStage: string;
   targetStage: string;
 
+  hasTagMismatch: boolean;        // Service exists with a tag-mismatch (outdated version)
+  hasDependencyMismatch: boolean; // Service exists with a dependency mismatch (not deployed)
+  hasNoIssues: boolean;           // Service exists that is up-to-date
+
   @ViewChild('dependencyGraph', { static: false })
   container: ElementRef;
 
@@ -72,6 +76,11 @@ export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
     this.tag = result.tag;
     this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
+
+    const allMismatches = [...result.mismatches.children, ...result.mismatches.parents];
+    this.hasTagMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Tag);
+    this.hasDependencyMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Dependency);
+    this.hasNoIssues = [...result.dependencies.children, ...result.dependencies.parents].length > allMismatches.length;
 
     this._graph = generateDotNotation(result);
   }
