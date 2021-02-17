@@ -21,7 +21,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
     this.result = event.data.deliveryAnalytics;
     // this.result = this.getResultMissingDependencies();
     this.hasDependencies = STATUS_WITH_DEPENDENCIES.includes(this.result.status);
-    this.hasProblematicServices = this.result.problematicServices.length > 0;
+    this.hasProblematicServices = this.result.problematicServices?.length > 0;
   }
 
   private getResultMissingDependencies(): DeliveryAnalyticsResult {
