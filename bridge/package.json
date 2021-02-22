@@ -45,7 +45,7 @@
     "@dynatrace/barista-components": "^7.7.0",
     "@dynatrace/barista-fonts": ">= 1.0.0 < 2",
     "@dynatrace/barista-icons": "^5.0.0",
-    "@hpcc-js/wasm": "^1.2.1",
+    "@hpcc-js/wasm": "0.3.13",
     "@ngrx/core": "^1.2.0",
     "@ngrx/effects": "^8.6.0",
     "@ngrx/router-store": "^8.6.0",
