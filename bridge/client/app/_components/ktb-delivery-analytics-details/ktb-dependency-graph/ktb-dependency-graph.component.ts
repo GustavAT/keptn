@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DeliveryAnalyticsResult, MismatchType } from 'client/app/_models/delivery-analytics-result';
 import { graphviz } from 'd3-graphviz';
 import { wasmFolder } from '@hpcc-js/wasm';
 import { DtColors } from '@dynatrace/barista-components/theming';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const SERVICE_COLOR = DtColors.BLUE_600;
 const ERROR_COLOR = DtColors.RED_600;
@@ -56,7 +58,7 @@ const generateDotNotation = ({ service, dependencies, mismatches }: DeliveryAnal
   templateUrl: './ktb-dependency-graph.component.html',
   styleUrls: ['./ktb-dependency-graph.component.scss']
 })
-export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
+export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterViewInit {
 
   service: string;
   tag: string;
@@ -70,6 +72,9 @@ export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
   @ViewChild('dependencyGraph', { static: false })
   container: ElementRef;
 
+  private readonly graph$ = new ReplaySubject<string>();
+  private readonly destroy$ = new Subject<void>();
+
   @Input()
   set result(result: DeliveryAnalyticsResult) {
     this.service = result.service;
@@ -82,18 +87,26 @@ export class KtbDependencyGraphComponent implements OnInit, AfterViewInit {
     this.hasDependencyMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Dependency);
     this.hasNoIssues = [...result.dependencies.children, ...result.dependencies.parents].length > allMismatches.length;
 
-    this._graph = generateDotNotation(result);
+    this.graph$.next(generateDotNotation(result));
   }
 
-  private _graph: string;
-
   ngAfterViewInit() {
-    this.renderGraph(this._graph);
+    this.graph$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((graph) => {
+        this.renderGraph(graph);
+      });
   }
 
   ngOnInit() {
     // Path to graphviz webassembly - required for rendering the dot-notation with d3-graphviz
     wasmFolder('/assets/@hpcc-js/wasm/dist/');
+  }
+
+  ngOnDestroy() {
+    console.log('destroy');
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private renderGraph(dotNotation: string) {

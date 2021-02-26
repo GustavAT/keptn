@@ -106,6 +106,10 @@ export class Root extends Trace {
     return this.traces.find(t => t.type == EventTypes.EVALUATION_TRIGGERED && t.data.stage == stageName);
   }
 
+  getDeliveryAnalytics(stageName: string): Trace {
+    return this.traces.find(t => t.type === EventTypes.DELIVERY_ANALYTICS_TRIGGERED && t.data.stage === stageName);
+  }
+
   getDeploymentDetails(stage: Stage): Trace {
     return this.traces.find(t => t.type == EventTypes.DEPLOYMENT_TRIGGERED && t.data.stage == stage.stageName)?.getFinishedEvent();
   }

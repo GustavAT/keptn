@@ -2,13 +2,14 @@
 </ktb-delivery-analytics-header>
 
 <ng-container *ngIf="hasDependencies">
-    <br>
-
-    <ktb-release-order *ngIf="!hasProblematicServices" [result]="result">
-    </ktb-release-order>
-
-    <br>
     
+
+    <ng-container *ngIf="!hasProblematicServices">
+        <br>
+        <ktb-release-order [result]="result">
+        </ktb-release-order>
+    </ng-container>
+
     <ktb-dependency-graph [result]="result">
     </ktb-dependency-graph>
 </ng-container>

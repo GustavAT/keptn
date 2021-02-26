@@ -97,6 +97,14 @@
         </ktb-event-item-detail>
       </ktb-event-item>
     </div>
+    <div fxLayout="column" fxLayoutGap="15px" *ngIf="currentRoot.getDeliveryAnalytics(selectedStage) as deliveryAnalyticsEvent">
+      <ktb-event-item [event]="deliveryAnalyticsEvent" *ngIf="deliveryAnalyticsEvent.isFinished()">
+        <ktb-event-item-detail>
+          <ktb-delivery-analytics-details [event]="deliveryAnalyticsEvent.getFinishedEvent()">
+          </ktb-delivery-analytics-details>
+        </ktb-event-item-detail>
+      </ktb-event-item>
+    </div>
     <div fxLayout="column" fxLayoutGap="15px" *ngIf="selectedStage && currentRoot.getPendingApprovals(selectedStage).length > 0">
       <ktb-event-item *ngFor="let approvalEvent of currentRoot.getPendingApprovals(selectedStage)" [event]="approvalEvent"></ktb-event-item>
     </div>
