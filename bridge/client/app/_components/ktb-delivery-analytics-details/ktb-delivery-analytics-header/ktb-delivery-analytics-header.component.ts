@@ -26,7 +26,7 @@ export class KtbDeliveryAnalyticsHeaderComponent {
   targetStage: string;
   problematicServices: EvaluationResult[];
 
-  hasParentMismatches: boolean;
+  shouldNotUpdate: boolean;
 
   @Input()
   set result(result: DeliveryAnalyticsResult) {
@@ -37,7 +37,7 @@ export class KtbDeliveryAnalyticsHeaderComponent {
     this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
     this.problematicServices = result.problematicServices;
-    this.hasParentMismatches = result.mismatches.parents.length > 0;
+    this.shouldNotUpdate = result.recommendation.before.length > 0;
   }
 
 }

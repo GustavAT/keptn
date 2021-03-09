@@ -1,10 +1,10 @@
 <div>
-    <h3 i18n>Recommended deployment order for <b>{{targetStage}}</b></h3>
+    <h3 i18n>Recommended release order for <b>{{targetStage}}</b></h3>
 
     <ul>
         <!-- Parent dependencies -->
-        <ng-container *ngIf="parentMismatches.length > 0; else noParentMismatches">
-            <li *ngFor="let mismatch of parentMismatches; index as i; last as isLast"
+        <ng-container *ngIf="updateBeforeList.length > 0; else descendantsOk">
+            <li *ngFor="let mismatch of updateBeforeList; index as i; last as isLast"
                 [ngClass]="{'group-separator': isLast, 'error': true}"
                 i18n>
                 Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
@@ -14,9 +14,9 @@
             </li>
         </ng-container>
 
-        <ng-template #noParentMismatches>
-            <li *ngIf="hasParents" class="group-separator success" i18n> All parent-dependencies are up-to-date </li>
-            <li *ngIf="!hasParents" class="group-separator other" i18n> No parent-dependencies</li>
+        <ng-template #descendantsOk>
+            <li *ngIf="hasDescendants" class="group-separator success" i18n> All outgoing dependencies are up-to-date </li>
+            <li *ngIf="!hasDescendants" class="group-separator other" i18n> No outgoing dependencies </li>
         </ng-template>
 
         <!-- Target service -->
@@ -28,8 +28,8 @@
         </li>
 
         <!-- Child dependencies -->
-        <ng-container *ngIf="childMismatches.length > 0; else noChildMismatches">
-            <li *ngFor="let mismatch of childMismatches; index as i; last as isLast"
+        <ng-container *ngIf="updateAfterList.length > 0; else ascendantsOk">
+            <li *ngFor="let mismatch of updateAfterList; index as i; last as isLast"
                 [ngClass]="{'group-separator': isLast, 'error': true}"
                 i18n>
                 Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
@@ -39,9 +39,9 @@
             </li>
         </ng-container>
 
-        <ng-template #noChildMismatches>
-            <li *ngIf="hasChildren" class="success" i18n> All child-dependencies are up-to-date </li>
-            <li *ngIf="!hasChildren" class="other" i18n> No child-dependencies</li>
+        <ng-template #ascendantsOk>
+            <li *ngIf="hasAscendants" class="success" i18n> All incoming dependencies are up-to-date </li>
+            <li *ngIf="!hasAscendants" class="other" i18n> No incoming dependencies </li>
         </ng-template>
     </ul>
 </div>

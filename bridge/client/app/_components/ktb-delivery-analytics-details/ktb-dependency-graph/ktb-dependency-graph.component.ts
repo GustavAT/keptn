@@ -14,28 +14,26 @@ const FONT_COLOR = DtColors.GRAY_900;
 const createNode = (name: string, color: string, style: 'solid' | 'dashed'): string =>
   `node [shape=ellipse, fontname=monospace, fontcolor="${FONT_COLOR}", color="${color}", style=${style}] "${name}";`;
 
-const generateDotNotation = ({ service, dependencies, mismatches }: DeliveryAnalyticsResult): string => {
-  const nodes = [service, ...dependencies.parents, ...dependencies.children];
-  const relations = dependencies.relations;
-  const parentMismatches = mismatches.parents;
-  const childMismatches = mismatches.children;
+const generateDotNotation = ({ service, serviceCalls, recommendation }: DeliveryAnalyticsResult): string => {
+  const updateBeforeList = recommendation.before;
+  const updateAfterList = recommendation.after;
 
   const items: string[] = [];
 
-  for (let node of nodes) {
+  for (let svc of serviceCalls.services) {
     let nodeString: string;
-    if (node === service) {
-      nodeString = createNode(node, SERVICE_COLOR, 'solid');
+    if (svc === service) {
+      nodeString = createNode(svc, SERVICE_COLOR, 'solid');
     } else {
-      const parentMismatch = parentMismatches.find((value) => value.service === node);
+      const parentMismatch = updateBeforeList.find((value) => value.service === svc);
       if (parentMismatch) {
-        nodeString = createNode(node, ERROR_COLOR, parentMismatch.type === MismatchType.Tag ? 'solid' : 'dashed');
+        nodeString = createNode(svc, ERROR_COLOR, parentMismatch.type === MismatchType.Tag ? 'solid' : 'dashed');
       } else {
-        const childMismatch = childMismatches.find((value) => value.service === node);
+        const childMismatch = updateAfterList.find((value) => value.service === svc);
         if (childMismatch) {
-          nodeString = createNode(node, ERROR_COLOR, childMismatch.type === MismatchType.Tag ? 'solid' : 'dashed');
+          nodeString = createNode(svc, ERROR_COLOR, childMismatch.type === MismatchType.Tag ? 'solid' : 'dashed');
         } else {
-          nodeString = createNode(node, COLOR_IGNORE, 'solid');
+          nodeString = createNode(svc, COLOR_IGNORE, 'solid');
         }
       }
     }
@@ -43,7 +41,7 @@ const generateDotNotation = ({ service, dependencies, mismatches }: DeliveryAnal
     items.push(nodeString);
   }
 
-  for (let { from, to } of relations) {
+  for (let { from, to } of serviceCalls.calls) {
     items.push(`"${from}"->"${to}" [splines=true];`);
   }
 
@@ -82,10 +80,10 @@ export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterView
     this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
 
-    const allMismatches = [...result.mismatches.children, ...result.mismatches.parents];
+    const allMismatches = [...result.recommendation.before, ...result.recommendation.after];
     this.hasTagMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Tag);
     this.hasDependencyMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Dependency);
-    this.hasNoIssues = [...result.dependencies.children, ...result.dependencies.parents].length > allMismatches.length;
+    this.hasNoIssues = result.serviceCalls.services.length > allMismatches.length;
 
     this.graph$.next(generateDotNotation(result));
   }

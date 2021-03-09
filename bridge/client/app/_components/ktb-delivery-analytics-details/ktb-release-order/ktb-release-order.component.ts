@@ -16,11 +16,11 @@ export class KtbReleaseOrderComponent {
   deployedTag: string | undefined;
   targetStage: string;
 
-  hasParents: boolean;
-  hasChildren: boolean;
+  hasDescendants: boolean;
+  hasAscendants: boolean;
 
-  parentMismatches: Mismatch[];
-  childMismatches: Mismatch[];
+  updateBeforeList: Mismatch[];
+  updateAfterList: Mismatch[];
 
   @Input()
   set result(result: DeliveryAnalyticsResult) {
@@ -29,11 +29,11 @@ export class KtbReleaseOrderComponent {
     this.deployedTag = result.deployedTag;
     this.targetStage = result.targetStage;
 
-    const { parents, children } = result.dependencies;
-    this.hasParents = parents.length > 0;
-    this.hasChildren = children.length > 0;
+    const calls = result.serviceCalls.calls;
+    this.hasDescendants = calls.filter(({ from }) => from === this.service).length > 0;
+    this.hasAscendants = calls.filter(({ to }) => to === this.service).length > 0;
 
-    this.parentMismatches = result.mismatches.parents;
-    this.childMismatches = result.mismatches.children;
+    this.updateBeforeList = result.recommendation.before;
+    this.updateAfterList = result.recommendation.after;
   }
 }

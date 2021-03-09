@@ -36,13 +36,12 @@ export interface DeliveryAnalyticsResult {
     testedStage: string;
     targetStage: string;
     problematicServices: EvaluationResult[];
-    dependencies: {
-        parents: string[];
-        children: string[];
-        relations: { from: string; to: string; }[];
+    serviceCalls: {
+        services: string[];
+        calls: { from: string; to: string; }[];
     };
-    mismatches: {
-        parents: Mismatch[];
-        children: Mismatch[];
+    recommendation: {
+        before: Mismatch[];
+        after: Mismatch[];
     };
 }

@@ -45,7 +45,7 @@
         <ktb-failed-services-view [evaluationResult]="problematicServices">
         </ktb-failed-services-view>
     </ng-container>
-    <ng-container *ngIf="status === STATUS_MISMATCH && hasParentMismatches">
+    <ng-container *ngIf="status === STATUS_MISMATCH && shouldNotUpdate">
         <h3>
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
             <span i18n><b>{{service}}</b> is not safe to deploy</span>
@@ -57,7 +57,7 @@
             <b>{{targetStage}}</b>.
         </span>
     </ng-container>
-    <ng-container *ngIf="status === STATUS_MISMATCH && !hasParentMismatches">
+    <ng-container *ngIf="status === STATUS_MISMATCH && !shouldNotUpdate">
         <h3>
             <dt-icon class="status-icon status-warning" name="deploy"></dt-icon>
             <span i18n><b>{{service}}</b> is safe to deploy</span>

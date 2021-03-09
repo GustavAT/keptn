@@ -32,8 +32,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
-      dependencies: { parents: [], children: [], relations: [] },
-      mismatches: { parents: [], children: [] },
+      serviceCalls: { services: [], calls: [] },
+      recommendation: { before: [], after: [] },
     };
   }
 
@@ -46,8 +46,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
-      dependencies: { parents: [], children: [], relations: [] },
-      mismatches: { parents: [], children: [] },
+      serviceCalls: { services: [], calls: [] },
+      recommendation: { before: [], after: [] },
     };
   }
 
@@ -60,8 +60,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
-      dependencies: { parents: [], children: [], relations: [] },
-      mismatches: { parents: [], children: [] },
+      serviceCalls: { services: [], calls: [] },
+      recommendation: { before: [], after: [] },
     };
   }
 
@@ -74,8 +74,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [{ service: 'fontend', tag: '0.4.3', result: ResultTypes.FAILED }],
-      dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
-      mismatches: { parents: [], children: [] },
+      serviceCalls: { services: ['carts', 'cache', 'checkout', 'payment', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
+      recommendation: { before: [], after: [] },
     };
   }
 
@@ -88,8 +88,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
-      dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
-      mismatches: { parents: [], children: [] },
+      serviceCalls: { services: ['carts', 'cache', 'checkout', 'payment', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
+      recommendation: { before: [], after: [] },
     };
   }
 
@@ -102,8 +102,8 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
-      dependencies: { parents: ['carts', 'cache', 'payment'], children: ['frontend'], relations: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
-      mismatches: { parents: [{ service: 'cache', type: MismatchType.Tag, tagTested: '0.5.1', tagTarget: '0.5.0' }], children: [{ service: 'frontend', type: MismatchType.Dependency, tagTested: '0.5.0' }] },
+      serviceCalls: { services: ['carts', 'cache', 'checkout', 'payment', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
+      recommendation: { before: [{ service: 'cache', type: MismatchType.Tag, tagTested: '0.5.1', tagTarget: '0.5.0' }], after: [{ service: 'frontend', type: MismatchType.Dependency, tagTested: '0.5.0' }] },
     };
   }
 }
