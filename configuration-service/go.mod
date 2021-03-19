@@ -21,7 +21,6 @@ require (
 	github.com/gorilla/websocket v1.4.1 // indirect
 	github.com/imdario/mergo v0.3.9 // indirect
 	github.com/jessevdk/go-flags v1.4.0
-	github.com/json-iterator/go v1.1.9 // indirect
 	github.com/keptn/go-utils v0.8.0-alpha.0.20210212103514-6347ba9aeb2b
 	github.com/keptn/kubernetes-utils v0.8.0-alpha.0.20210210151638-4b5b09c2e79c
 	github.com/mholt/archiver v3.1.1+incompatible
@@ -35,7 +34,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/apimachinery v0.17.2
+	k8s.io/apimachinery v0.20.5
 	k8s.io/client-go v0.17.2
 	k8s.io/utils v0.0.0-20200327001022-6496210b90e8 // indirect
 )
