@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { DeliveryAnalyticsResult, Mismatch, MismatchType } from 'client/app/_models/delivery-analytics-result';
+import { AnalyticsStatus, DeliveryAnalyticsResult, EvaluationResult, Mismatch, MismatchType } from 'client/app/_models/delivery-analytics-result';
+import { ResultTypes } from 'client/app/_models/result-types';
 
 @Component({
   selector: 'ktb-release-order',
@@ -10,6 +11,8 @@ export class KtbReleaseOrderComponent {
 
   readonly DEPENDENCY_MISMATCH = MismatchType.Dependency;
   readonly TAG_MISMATCH = MismatchType.Tag;
+  readonly WARNING = ResultTypes.WARNING;
+  readonly FAILED = ResultTypes.FAILED;
 
   service: string;
   tag: string;
@@ -19,6 +22,8 @@ export class KtbReleaseOrderComponent {
   hasDescendants: boolean;
   hasAscendants: boolean;
 
+  isNotTested: boolean;
+  problematicList: EvaluationResult[];
   updateBeforeList: Mismatch[];
   updateAfterList: Mismatch[];
 
@@ -33,6 +38,8 @@ export class KtbReleaseOrderComponent {
     this.hasDescendants = calls.filter(({ from }) => from === this.service).length > 0;
     this.hasAscendants = calls.filter(({ to }) => to === this.service).length > 0;
 
+    this.isNotTested = result.status === AnalyticsStatus.NotTested;
+    this.problematicList = result.problematicServices;
     this.updateBeforeList = result.recommendation.before;
     this.updateAfterList = result.recommendation.after;
   }

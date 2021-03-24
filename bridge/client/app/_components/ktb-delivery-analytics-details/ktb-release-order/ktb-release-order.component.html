@@ -1,47 +1,61 @@
-<div>
-    <h3 i18n>Recommended release order for <b>{{targetStage}}</b></h3>
-
+<div *ngIf="isNotTested; else isTested">
     <ul>
-        <!-- Parent dependencies -->
-        <ng-container *ngIf="updateBeforeList.length > 0; else descendantsOk">
-            <li *ngFor="let mismatch of updateBeforeList; index as i; last as isLast"
-                [ngClass]="{'group-separator': isLast, 'error': true}"
-                i18n>
-                Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
-                <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
-                    (Currently deployed tag <code>{{mismatch.tagTarget}}</code>)
-                </ng-container>
-            </li>
-        </ng-container>
-
-        <ng-template #descendantsOk>
-            <li *ngIf="hasDescendants" class="group-separator success" i18n> All outgoing dependencies are up-to-date </li>
-            <li *ngIf="!hasDescendants" class="group-separator other" i18n> No outgoing dependencies </li>
-        </ng-template>
-
-        <!-- Target service -->
-        <li class="group-separator status" i18n>
-            Deploy <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
-            <ng-container *ngIf="deployedTag !== undefined">
-                (Currently deployed tag <code>{{deployedTag}}</code>)
+        <li *ngFor="let problem of problematicList"
+            [ngClass]="{'group-separator': true, 'error': problem.result === FAILED, 'warning': problem.result === WARNING}"
+            i18n>
+            <b>{{problem.service}}</b>&nbsp;<code>{{problem.tag}}</code>
+            <ng-container *ngIf="problem.result === FAILED">
+                failed the evaluation.
+            </ng-container>
+            <ng-container *ngIf="problem.result !== FAILED">
+                passed the evaluation with warnings.
             </ng-container>
         </li>
-
-        <!-- Child dependencies -->
-        <ng-container *ngIf="updateAfterList.length > 0; else ascendantsOk">
-            <li *ngFor="let mismatch of updateAfterList; index as i; last as isLast"
-                [ngClass]="{'group-separator': isLast, 'error': true}"
-                i18n>
-                Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
-                <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
-                    (Currently deployed tag <code>{{mismatch.tagTarget}}</code>)
-                </ng-container>
-            </li>
-        </ng-container>
-
-        <ng-template #ascendantsOk>
-            <li *ngIf="hasAscendants" class="success" i18n> All incoming dependencies are up-to-date </li>
-            <li *ngIf="!hasAscendants" class="other" i18n> No incoming dependencies </li>
-        </ng-template>
     </ul>
 </div>
+<ng-template #isTested>
+    <div>
+        <ul>
+            <!-- Outgoing dependencies -->
+            <ng-container *ngIf="updateBeforeList.length > 0; else descendantsOk">
+                <li *ngFor="let mismatch of updateBeforeList; index as i; last as isLast"
+                    [ngClass]="{'group-separator': isLast, 'error': true}" i18n>
+                    Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
+                    <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
+                        (Currently deployed tag <code>{{mismatch.tagTarget}}</code>)
+                    </ng-container>
+                </li>
+            </ng-container>
+
+            <ng-template #descendantsOk>
+                <li *ngIf="hasDescendants" class="group-separator success" i18n> All outgoing dependencies are
+                    up-to-date </li>
+                <li *ngIf="!hasDescendants" class="group-separator other" i18n> No outgoing dependencies </li>
+            </ng-template>
+
+            <!-- Target service -->
+            <li class="group-separator status" i18n>
+                Deploy <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
+                <ng-container *ngIf="deployedTag !== undefined">
+                    (Currently deployed tag <code>{{deployedTag}}</code>)
+                </ng-container>
+            </li>
+
+            <!-- Incoming dependencies -->
+            <ng-container *ngIf="updateAfterList.length > 0; else ascendantsOk">
+                <li *ngFor="let mismatch of updateAfterList; index as i; last as isLast"
+                    [ngClass]="{'group-separator': isLast, 'error': true}" i18n>
+                    Deploy <b>{{mismatch.service}}</b>&nbsp;<code>{{mismatch.tagTested}}</code>
+                    <ng-container *ngIf="mismatch.type === TAG_MISMATCH">
+                        (Currently deployed tag <code>{{mismatch.tagTarget}}</code>)
+                    </ng-container>
+                </li>
+            </ng-container>
+
+            <ng-template #ascendantsOk>
+                <li *ngIf="hasAscendants" class="success" i18n> All incoming dependencies are up-to-date </li>
+                <li *ngIf="!hasAscendants" class="other" i18n> No incoming dependencies </li>
+            </ng-template>
+        </ul>
+    </div>
+</ng-template>
