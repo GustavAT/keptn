@@ -1,11 +1,22 @@
 <h3 i18n>
-    Dependenies for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
+    Call-graph for <b>{{service}}</b>&nbsp;<code>{{tag}}</code>
     in <b>{{testedStage}}</b>
 </h3>
 
 <div #dependencyGraph class="graph"></div>
 
 <div class="legend">
+    <!-- Quality Gate -->
+    <div *ngIf="hasQualityGateFailed" class="legend-item">
+        <span class="legend-item-indicator legend-error"></span>
+        <span i18n>Quality Gate failed</span>
+    </div>
+    <div *ngIf="hasQualityGateWarning" class="legend-item">
+        <span class="legend-item-indicator legend-warning"></span>
+        <span i18n>Qualtity Gate passed with warning</span>
+    </div>
+
+    <!-- Not deployed/outdated -->
     <div *ngIf="hasTagMismatch" class="legend-item">
         <span class="legend-item-indicator legend-error"></span>
         <span i18n>Outdated in {{targetStage}}</span>
@@ -14,16 +25,18 @@
         <span class="legend-item-indicator legend-error-deploy"></span>
         <span i18n>Not deployed in {{targetStage}}</span>
     </div>
+
+    <!-- Remaining items -->
     <div class="legend-item">
         <span class="legend-item-indicator legend-service"></span>
-        <span i18n>Service to deploy</span>
+        <span i18n>Release target</span>
     </div>
     <div *ngIf="hasNoIssues" class="legend-item">
         <span class="legend-item-indicator legend-other"></span>
-        <span i18n>No issues</span>
+        <span i18n>Ok</span>
     </div>
     <div class="legend-item">
         <span class="legend-item-indicator legend-relation"></span>
-        <span i18n>Depends on</span>
+        <span i18n>Calls</span>
     </div>
 </div>

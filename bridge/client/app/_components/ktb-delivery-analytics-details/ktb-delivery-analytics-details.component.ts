@@ -14,14 +14,12 @@ export class KtbDeliveryAnalyticsDetailsComponent {
 
   result: DeliveryAnalyticsResult;
   hasDependencies: boolean;
-  hasProblematicServices: boolean;
 
   @Input()
   set event(event: Trace) {
     this.result = event.data.deliveryAnalytics;
-    // this.result = this.getResultMissingDependencies();
+    // this.result = this.getResultNotTested();
     this.hasDependencies = STATUS_WITH_DEPENDENCIES.includes(this.result.status);
-    this.hasProblematicServices = this.result.problematicServices?.length > 0;
   }
 
   private getResultMissingDependencies(): DeliveryAnalyticsResult {
@@ -32,6 +30,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
+      tags: {},
       serviceCalls: { services: [], calls: [] },
       recommendation: { before: [], after: [] },
     };
@@ -46,6 +45,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
+      tags: {},
       serviceCalls: { services: [], calls: [] },
       recommendation: { before: [], after: [] },
     };
@@ -60,6 +60,7 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
+      tags: {},
       serviceCalls: { services: [], calls: [] },
       recommendation: { before: [], after: [] },
     };
@@ -73,7 +74,14 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       deployedTag: '0.5.0',
       testedStage: 'staging',
       targetStage: 'production',
-      problematicServices: [{ service: 'fontend', tag: '0.4.3', result: ResultTypes.FAILED }],
+      tags: {
+        'frontend': '1.2.8',
+        'carts': '0.4.4',
+        'checkout': '0.5.1',
+        'cache': '1.0.0',
+        'payment': '2.0.3',
+      },
+      problematicServices: [{ service: 'frontend', tag: '1.2.8', result: ResultTypes.FAILED }, { service: 'cache', tag: '1.0.0', result: ResultTypes.WARNING }],
       serviceCalls: { services: ['carts', 'cache', 'checkout', 'payment', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
       recommendation: { before: [], after: [] },
     };
@@ -88,6 +96,13 @@ export class KtbDeliveryAnalyticsDetailsComponent {
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
+      tags: {
+        'frontend': '1.2.8',
+        'carts': '0.4.4',
+        'checkout': '0.5.1',
+        'cache': '1.0.0',
+        'payment': '2.0.3',
+      },
       serviceCalls: { services: ['carts', 'cache', 'checkout', 'payment', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
       recommendation: { before: [], after: [] },
     };
@@ -96,14 +111,20 @@ export class KtbDeliveryAnalyticsDetailsComponent {
   private getResultMismatch(): DeliveryAnalyticsResult {
     return {
       status: AnalyticsStatus.Mismatch,
-      service: 'checkout',
-      tag: '0.5.1',
-      deployedTag: '0.5.0',
+      service: 'carts',
+      tag: '0.4.4',
+      deployedTag: '0.4.2',
       testedStage: 'staging',
       targetStage: 'production',
       problematicServices: [],
-      serviceCalls: { services: ['carts', 'cache', 'checkout', 'payment', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'checkout', to: 'carts' }, { from: 'checkout', to: 'payment' }, { from: 'carts', to: 'cache' }] },
-      recommendation: { before: [{ service: 'cache', type: MismatchType.Tag, tagTested: '0.5.1', tagTarget: '0.5.0' }], after: [{ service: 'frontend', type: MismatchType.Dependency, tagTested: '0.5.0' }] },
+      tags: {
+        'frontend': '1.2.8',
+        'carts': '0.4.4',
+        'checkout': '0.5.1',
+        'cache': '1.0.0',
+      },
+      serviceCalls: { services: ['carts', 'cache', 'checkout', 'frontend'], calls: [{ from: 'frontend', to: 'checkout' }, { from: 'frontend', to: 'carts' }, { from: 'checkout', to: 'carts' }, { from: 'carts', to: 'cache' }] },
+      recommendation: { before: [], after: [{ service: 'checkout', type: MismatchType.Tag, tagTested: '0.5.1', tagTarget: '0.5.0' }, { service: 'frontend', type: MismatchType.Dependency, tagTested: '1.2.8' }] },
     };
   }
 }

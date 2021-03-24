@@ -26,7 +26,7 @@ export interface EvaluationResult {
     service: string;
     tag: string;
     result: ResultTypes;
-} 
+}
 
 export interface DeliveryAnalyticsResult {
     status: AnalyticsStatus;
@@ -36,6 +36,7 @@ export interface DeliveryAnalyticsResult {
     testedStage: string;
     targetStage: string;
     problematicServices: EvaluationResult[];
+    tags: { [key: string]: string };
     serviceCalls: {
         services: string[];
         calls: { from: string; to: string; }[];

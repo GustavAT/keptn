@@ -33,7 +33,11 @@ h3 {
 }
 
 .legend-error {
-    background: $red-500;
+    background: $red-600;
+}
+
+.legend-warning {
+    background: $yellow-600;
 }
 
 .legend-service {
