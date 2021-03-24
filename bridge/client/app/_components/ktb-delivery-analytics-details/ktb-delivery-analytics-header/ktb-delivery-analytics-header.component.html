@@ -16,7 +16,7 @@
     <ng-container *ngIf="status === STATUS_TAG_DEPLOYED || status === STATUS_NEWER_TAG_DEPLOYED">
         <h3>
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
-            <span i18n><b>{{service}}</b> is already deployed</span>
+            <span i18n><b>{{service}}</b>&nbsp;<code>{{deployedTag}}</code> is already deployed</span>
         </h3>
         <span *ngIf="status === STATUS_TAG_DEPLOYED" i18n>
             The analysis is skipped for <b>{{service}}</b>&nbsp;<code>{{deployedTag}}</code> because the
@@ -30,50 +30,50 @@
     <ng-container *ngIf="status === STATUS_CONFIGURATION_NOT_EXISTING">
         <h3>
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
-            <span i18n><b>{{service}}</b> release not found</span>
+            <span i18n>No release found for <b>{{service}}</b>&nbsp;<code>{{deployedTag}}</code></span>
         </h3>
         <span i18n>
             No evaluated release for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> and <b>its dependencies</b> was found in
             <b>{{testedStage}}</b>.
         </span>
     </ng-container>
-    <ng-container *ngIf="status === STATUS_NOT_TESTED">
+    <ng-container *ngIf="notTested">
         <h3>
             <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
-            <span i18n><b>{{service}}</b> dependency evaluation was not successful</span>
-        </h3>
-        <ktb-failed-services-view [evaluationResult]="problematicServices">
-        </ktb-failed-services-view>
-    </ng-container>
-    <ng-container *ngIf="status === STATUS_MISMATCH && shouldNotUpdate">
-        <h3>
-            <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
-            <span i18n><b>{{service}}</b> is not safe to deploy</span>
+            <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is not safe to deploy</span>
         </h3>
         <span i18n>
-            Parent dependencies for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> are outdated or not
-            deployed in <b>{{targetStage}}</b>.
-            They should be updated before deploying <b>{{service}}</b>&nbsp;<code>{{tag}}</code> to
-            <b>{{targetStage}}</b>.
+            No successfully tested configuration was found for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{testedStage}}</b>.
+            <br>
+            The following services did not pass their own quality gate. Fix these issues and re-run the analysis.
         </span>
     </ng-container>
-    <ng-container *ngIf="status === STATUS_MISMATCH && !shouldNotUpdate">
+    <ng-container *ngIf="notSafeToDeploy">
+        <h3>
+            <dt-icon class="status-icon status-error" name="deploy"></dt-icon>
+            <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is not safe to deploy</span>
+        </h3>
+        <span i18n>
+            Apply the following recommendations to achieve a tested state for
+            <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{targetStage}}</b>:
+        </span>
+    </ng-container>
+    <ng-container *ngIf="safeToDeployWithWarnings">
         <h3>
             <dt-icon class="status-icon status-warning" name="deploy"></dt-icon>
-            <span i18n><b>{{service}}</b> is safe to deploy</span>
+            <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is safe to deploy</span>
         </h3>
         <span i18n>
-            Child dependencies for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> are outdated or not deployed
-            in <b>{{targetStage}}</b>.
-            They can be updated after deploying <b>{{service}}</b>&nbsp;<code>{{tag}}</code> to <b>{{targetStage}}</b>.
+            Apply the following recommendations to achieve a tested state for
+            <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{targetStage}}</b>:
         </span>
     </ng-container>
-    <ng-container *ngIf="status === STATUS_OK">
+    <ng-container *ngIf="safeToDeploy">
         <h3>
             <dt-icon class="status-icon status-success" name="deploy"></dt-icon>
-            <span i18n><b>{{service}}</b> is safe to deploy</span>
+            <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is safe to deploy</span>
         </h3>
-        <span i18n>All dependencies are up-to-date.</span>
+        <span i18n>All its dependencies are up-to-date.</span>
         <br>
     </ng-container>
 </div>

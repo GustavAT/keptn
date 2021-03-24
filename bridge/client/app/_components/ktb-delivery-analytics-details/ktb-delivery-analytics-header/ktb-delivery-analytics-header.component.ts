@@ -14,9 +14,6 @@ export class KtbDeliveryAnalyticsHeaderComponent {
   readonly STATUS_TAG_DEPLOYED = AnalyticsStatus.TagDeployed;
   readonly STATUS_NEWER_TAG_DEPLOYED = AnalyticsStatus.NewerTagDeployed;
   readonly STATUS_CONFIGURATION_NOT_EXISTING = AnalyticsStatus.ConfigurationNotExisting;
-  readonly STATUS_NOT_TESTED = AnalyticsStatus.NotTested;
-  readonly STATUS_MISMATCH = AnalyticsStatus.Mismatch;
-  readonly STATUS_OK = AnalyticsStatus.Ok;
 
   status: AnalyticsStatus;
   service: string;
@@ -26,7 +23,10 @@ export class KtbDeliveryAnalyticsHeaderComponent {
   targetStage: string;
   problematicServices: EvaluationResult[];
 
-  shouldNotUpdate: boolean;
+  safeToDeploy: boolean;              // No issues with the service and its dependencies
+  safeToDeployWithWarnings: boolean;  // Incoming dependencies are not ok. Outgoing dependencies are up-to-date
+  notSafeToDeploy: boolean;           // Outgoing dependencies are not ok. Incoming dependencies might be up-to-date
+  notTested: boolean;                 // At least one quality gate of the service' dependencies failed or passed with warning
 
   @Input()
   set result(result: DeliveryAnalyticsResult) {
@@ -37,7 +37,12 @@ export class KtbDeliveryAnalyticsHeaderComponent {
     this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
     this.problematicServices = result.problematicServices;
-    this.shouldNotUpdate = result.recommendation.before.length > 0;
+
+    this.safeToDeploy = result.status === AnalyticsStatus.Ok;
+    const canUpdate = result.recommendation.before.length === 0;
+    this.safeToDeployWithWarnings = result.status === AnalyticsStatus.Mismatch && canUpdate;
+    this.notSafeToDeploy = result.status === AnalyticsStatus.Mismatch && !canUpdate;
+    this.notTested = result.status === AnalyticsStatus.NotTested;
   }
 
 }
