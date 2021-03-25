@@ -19,8 +19,7 @@
             <span i18n><b>{{service}}</b>&nbsp;<code>{{deployedTag}}</code> is already deployed</span>
         </h3>
         <span *ngIf="status === STATUS_TAG_DEPLOYED" i18n>
-            The analysis is skipped for <b>{{service}}</b>&nbsp;<code>{{deployedTag}}</code> because the
-            same tag is already deployed in <b>{{targetStage}}</b>.
+            The analysis is skipped for <b>{{service}}</b>&nbsp;<code>{{deployedTag}}</code> because this service is already deployed in <b>{{targetStage}}</b>.
         </span>
         <span *ngIf="status === STATUS_NEWER_TAG_DEPLOYED">
             The analysis is skipped for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> because a newer tag
@@ -43,7 +42,7 @@
             <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is not safe to deploy</span>
         </h3>
         <span i18n>
-            No successfully tested configuration was found for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{testedStage}}</b>.
+            <b>{{service}}</b>&nbsp;<code>{{tag}}</code> is not part of a successfully tested configuration in <b>{{testedStage}}</b>.
             <br>
             The following services did not pass their own quality gate. Fix these issues and re-run the analysis.
         </span>
@@ -54,8 +53,7 @@
             <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is not safe to deploy</span>
         </h3>
         <span i18n>
-            Apply the following recommendations to achieve a tested state for
-            <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{targetStage}}</b>:
+            Deploy services in the following order to <b>{{targetStage}}</b> to achieve a tested state:
         </span>
     </ng-container>
     <ng-container *ngIf="safeToDeployWithWarnings">
@@ -64,8 +62,7 @@
             <span i18n><b>{{service}}</b>&nbsp;<code>{{tag}}</code> is safe to deploy</span>
         </h3>
         <span i18n>
-            Apply the following recommendations to achieve a tested state for
-            <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{targetStage}}</b>:
+            Deploy services in the following order to <b>{{targetStage}}</b> to achieve a tested state:
         </span>
     </ng-container>
     <ng-container *ngIf="safeToDeploy">

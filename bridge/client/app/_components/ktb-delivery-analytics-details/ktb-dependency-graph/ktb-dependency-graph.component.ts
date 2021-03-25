@@ -117,15 +117,15 @@ export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterView
     this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
 
-    if (result.status === AnalyticsStatus.Mismatch) {
-      const allMismatches = [...result.recommendation.before, ...result.recommendation.after];
-      this.hasTagMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Tag);
-      this.hasDependencyMismatch = allMismatches.some((mismatch) => mismatch.type === MismatchType.Dependency);
-      this.hasNoIssues = result.serviceCalls.services.length > allMismatches.length;
-    } else if (status === AnalyticsStatus.NotTested) {
-      this.hasQualityGateWarning = result.problematicServices.some((service) => service.result === ResultTypes.WARNING);
-      this.hasQualityGateFailed = result.problematicServices.some((service) => service.result === ResultTypes.FAILED);
-    }
+    const hasMismatch = result.status === AnalyticsStatus.Mismatch;
+    const isNotTested = result.status === AnalyticsStatus.NotTested;
+    const allMismatches = [...result.recommendation.before, ...result.recommendation.after];
+
+    this.hasTagMismatch = hasMismatch && allMismatches.some((mismatch) => mismatch.type === MismatchType.Tag);
+    this.hasDependencyMismatch = hasMismatch && allMismatches.some((mismatch) => mismatch.type === MismatchType.Dependency);
+    this.hasNoIssues = hasMismatch && result.serviceCalls.services.length > allMismatches.length;
+    this.hasQualityGateWarning = isNotTested && result.problematicServices.some((service) => service.result === ResultTypes.WARNING);
+    this.hasQualityGateFailed = isNotTested && result.problematicServices.some((service) => service.result === ResultTypes.FAILED);
 
     this.graph$.next(generateDotNotation(result));
   }
