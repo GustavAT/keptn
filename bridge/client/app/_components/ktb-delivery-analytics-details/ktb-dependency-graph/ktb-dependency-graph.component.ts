@@ -59,7 +59,6 @@ export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterView
   private renderGraph(dotNotation: string) {
     graphviz(this.container.nativeElement)
       .width('100%')
-      .height('100%')
       .fit(true)
       .renderDot(dotNotation);
   }
