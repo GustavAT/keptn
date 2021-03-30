@@ -1,37 +1,29 @@
+<h3 i18n>Call-graph for <b>{{service}}</b>&nbsp;<code>{{tag}}</code> in <b>{{testedStage}}</b></h3>
+
 <div #dependencyGraph class="graph"></div>
 
 <div class="legend">
-    <!-- Quality Gate -->
-    <div *ngIf="hasQualityGateFailed" class="legend-item">
-        <span class="legend-item-indicator legend-error"></span>
-        <span i18n>Quality Gate failed</span>
-    </div>
-    <div *ngIf="hasQualityGateWarning" class="legend-item">
-        <span class="legend-item-indicator legend-warning"></span>
-        <span i18n>Qualtity Gate passed with warning</span>
-    </div>
+    <div *ngFor="let item of legendItems" class="legend-item">
+        <ng-container *ngIf="item.style === 'arrow'">
+            <span class="arrow-icon"></span>
+        </ng-container>
 
-    <!-- Not deployed/outdated -->
-    <div *ngIf="hasTagMismatch" class="legend-item">
-        <span class="legend-item-indicator legend-error"></span>
-        <span i18n>Outdated in {{targetStage}}</span>
-    </div>
-    <div *ngIf="hasDependencyMismatch" class="legend-item">
-        <span class="legend-item-indicator legend-error-deploy"></span>
-        <span i18n>Not deployed in {{targetStage}}</span>
-    </div>
+        <ng-container *ngIf="item.style === 'solid'">
+            <span class="legend-item-indicator"
+                [class.active]="item.type === 'active'"
+                [class.inactive]="item.type === 'inactive'"
+                [class.error]="item.type === 'error'"
+                [class.warning]="item.type === 'warning'">
+            </span>
+        </ng-container>
 
-    <!-- Remaining items -->
-    <div class="legend-item">
-        <span class="legend-item-indicator legend-service"></span>
-        <span i18n>Release target</span>
-    </div>
-    <div *ngIf="hasNoIssues" class="legend-item">
-        <span class="legend-item-indicator legend-other"></span>
-        <span i18n>Ok</span>
-    </div>
-    <div class="legend-item">
-        <span class="legend-item-indicator legend-relation"></span>
-        <span i18n>Calls</span>
+        <ng-container *ngIf="item.style === 'dashed'">
+            <span class="legend-item-indicator"
+                [class.error-striped]="item.type === 'error'"
+                [class.warning-striped]="item.type === 'warning'">
+            </span>
+        </ng-container>
+
+        <span i18n>{{item.label}}</span>
     </div>
 </div>
