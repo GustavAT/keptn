@@ -1,14 +1,5 @@
 @import '~@dynatrace/barista-components/style/main';
 
-:host {
-    margin: 15px 0;
-    display: block;
-}
-
-h3 {
-    margin: 15px 0;
-}
-
 .graph {
     width: 100%;
     user-select: none;

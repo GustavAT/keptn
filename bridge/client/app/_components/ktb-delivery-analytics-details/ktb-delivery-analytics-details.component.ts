@@ -15,11 +15,20 @@ export class KtbDeliveryAnalyticsDetailsComponent {
   result: DeliveryAnalyticsResult;
   hasDependencies: boolean;
 
+  // call graph
+  service: string;
+  tag: string;
+  testedStage: string;
+
   @Input()
   set event(event: Trace) {
     this.result = event.data.deliveryAnalytics;
     // this.result = this.getResultNotTested();
     this.hasDependencies = STATUS_WITH_DEPENDENCIES.includes(this.result.status);
+
+    this.service = this.result.service;
+    this.tag = this.result.tag;
+    this.testedStage = this.result.testedStage;
   }
 
   private getResultMissingDependencies(): DeliveryAnalyticsResult {

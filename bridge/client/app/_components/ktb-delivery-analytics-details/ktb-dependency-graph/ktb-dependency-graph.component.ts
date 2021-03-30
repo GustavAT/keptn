@@ -92,9 +92,6 @@ const getNodesForEvaluation = ({ service, serviceCalls, problematicServices, tag
 })
 export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  service: string;
-  tag: string;
-  testedStage: string;
   targetStage: string;
 
   // TODO: move legend into its own component
@@ -112,9 +109,6 @@ export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterView
 
   @Input()
   set result(result: DeliveryAnalyticsResult) {
-    this.service = result.service;
-    this.tag = result.tag;
-    this.testedStage = result.testedStage;
     this.targetStage = result.targetStage;
 
     const hasMismatch = result.status === AnalyticsStatus.Mismatch;
@@ -151,6 +145,7 @@ export class KtbDependencyGraphComponent implements OnInit, OnDestroy, AfterView
   private renderGraph(dotNotation: string) {
     graphviz(this.container.nativeElement)
       .width('100%')
+      .height('100%')
       .fit(true)
       .renderDot(dotNotation);
   }
